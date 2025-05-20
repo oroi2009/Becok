@@ -1,0 +1,84 @@
+# Allow gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.jar
+
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+
+# Spring secret config
+application-secret.yml
+application-*.secret.yml
+application-secret.properties
+application-*.secret.properties
+
+# Build artifacts
+*.jar
+*.war
+*.ear
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+### .env ###
+.env.*
+.env
+
+# macOS system file
+.DS_Store
+
+# Windows system file
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux system file
+*.swp
+*~
+
+# JetBrains 계열 IDE 추가 설정 파일
+.idea_modules/
+modules.xml
+workspace.xml
+tasks.xml
+
+# log file
+*.log
+
+# test report
+/test-output/
+
+# Local configuration files
+*.local
+*.bak
