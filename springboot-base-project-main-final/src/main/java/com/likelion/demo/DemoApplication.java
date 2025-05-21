@@ -1,5 +1,6 @@
 package com.likelion.demo;
 
+import com.likelion.demo.domain.member.entity.Member;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
