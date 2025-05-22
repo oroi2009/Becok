@@ -1,10 +1,11 @@
 package com.likelion.demo.domain.member.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.likelion.demo.domain.participation.entity.ProgramRecord;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,4 +23,25 @@ public class Member {
     private String password;
 
     private String goal;
+
+    private int grade;
+
+    private int semester;
+
+    private int programPoint;
+    //관심 분야
+    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MemberInterest> memberInterestList = new ArrayList<>();
+    //비교과 프로그램 참여 내역
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProgramRecord> programs = new ArrayList<>();
+
+    @Enumerated(EnumType.STRING)
+    private RecommendType recommendType;
+
+    //연관 관계 편의 메서드
+    public void addProgramRecord(ProgramRecord programRecord) {
+        programs.add(programRecord);
+        programRecord.setMember(this);
+    }
 }
