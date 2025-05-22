@@ -1,8 +1,10 @@
 package com.likelion.demo.domain.member.service;
 
 import com.likelion.demo.domain.member.web.dto.*;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.Map;
 
 
 public interface MemberService {
@@ -12,6 +14,9 @@ public interface MemberService {
 
     //회원가입
     void signup(SignupReq signupReq);
+
+    //로그인
+    Map<String, String> login(LoginReq loginReq);
 
     //상세정보 입력
     CreateProfileRes createProfile(CreateProfileReq createProfileReq, Long memberId);
