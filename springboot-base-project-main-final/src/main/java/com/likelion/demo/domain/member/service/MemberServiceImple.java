@@ -1,10 +1,14 @@
 package com.likelion.demo.domain.member.service;
 
 import com.likelion.demo.domain.member.entity.Member;
+import com.likelion.demo.domain.member.exception.EmailDuplicateException;
 import com.likelion.demo.domain.member.exception.MemberNotFoundException;
+import com.likelion.demo.domain.member.exception.PasswordMismatchException;
 import com.likelion.demo.domain.member.repository.MemberRepository;
 import com.likelion.demo.domain.member.web.dto.CreateGoalReq;
 import com.likelion.demo.domain.member.web.dto.CreateGoalRes;
+import com.likelion.demo.domain.member.web.dto.SignupReq;
+import com.likelion.demo.global.exception.BaseException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,4 +31,27 @@ public class MemberServiceImple implements MemberService {
 
         return new CreateGoalRes(member.getId());
     }
+
+
+    //회원 가입
+    @Override
+    public void signup(SignupReq signupReq) {
+
+        if (memberRepository.existsByEmail(signupReq.getEmail())) {
+            throw new EmailDuplicateException();
+        }
+
+        if (!signupReq.getPassword().equals(signupReq.getPasswordCheck())) {
+            throw new PasswordMismatchException();
+        }
+
+        Member member = Member.builder()
+                .email(signupReq.getEmail())
+                .password(signupReq.getPassword())
+                .build();
+
+        memberRepository.save(member);
+    }
+
+
 }
