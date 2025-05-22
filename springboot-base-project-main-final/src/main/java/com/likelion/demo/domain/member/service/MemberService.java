@@ -1,8 +1,6 @@
 package com.likelion.demo.domain.member.service;
 
-import com.likelion.demo.domain.member.web.dto.CreateGoalReq;
-import com.likelion.demo.domain.member.web.dto.CreateGoalRes;
-import com.likelion.demo.domain.member.web.dto.SignupReq;
+import com.likelion.demo.domain.member.web.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,4 +12,7 @@ public interface MemberService {
 
     //회원가입
     void signup(SignupReq signupReq);
+
+    //상세정보 입력
+    CreateProfileRes createProfile(CreateProfileReq createProfileReq, Long memberId);
 }
