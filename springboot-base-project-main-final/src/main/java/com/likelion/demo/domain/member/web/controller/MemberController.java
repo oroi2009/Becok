@@ -33,6 +33,12 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.CREATED).body(SuccessResponse.created(null));
     }
 
+    //로그인
+    @PostMapping("/login")
+    public ResponseEntity<SuccessResponse<?>> login(@RequestBody @Valid LoginReq loginReq) {
+        return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.ok(memberService.login(loginReq)));
+    }
+
     //세부정보 입력
     @PostMapping("/profile/{memberId}")
     public ResponseEntity<SuccessResponse<?>> createProfile(@RequestBody @Valid CreateProfileReq createProfileReq, @PathVariable Long memberId) {

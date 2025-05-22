@@ -4,6 +4,7 @@ import com.likelion.demo.domain.member.entity.Interest;
 import com.likelion.demo.domain.member.entity.Member;
 import com.likelion.demo.domain.member.entity.MemberInterest;
 import com.likelion.demo.domain.member.exception.EmailDuplicateException;
+import com.likelion.demo.domain.member.exception.LoginFailException;
 import com.likelion.demo.domain.member.exception.MemberNotFoundException;
 import com.likelion.demo.domain.member.exception.PasswordMismatchException;
 import com.likelion.demo.domain.member.repository.InterestRepository;
@@ -16,8 +17,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -47,6 +50,12 @@ public class MemberServiceImple implements MemberService {
     @Override
     public void signup(SignupReq signupReq) {
 
+        // 프론트에서 아이디만 날아오면 아이디 뒤에 @hansung.ac.kr 붙여줌
+        String email = signupReq.getEmail();
+        if (!email.contains("@")) {
+            email = email + "@hansung.ac.kr";
+        }
+
         if (memberRepository.existsByEmail(signupReq.getEmail())) {
             throw new EmailDuplicateException();
         }
@@ -61,6 +70,21 @@ public class MemberServiceImple implements MemberService {
                 .build();
 
         memberRepository.save(member);
+    }
+
+    //로그인
+    @Override
+    public Map<String, String> login(LoginReq loginReq) {
+        Member member = memberRepository.findByEmail(loginReq.getEmail())
+                .orElseThrow(LoginFailException::new);
+
+        if (!member.getPassword().equals(loginReq.getPassword())) {
+            throw new LoginFailException();
+        }
+
+        Map<String, String> res = new HashMap<>();
+        res.put("email", member.getEmail());
+        return res;
     }
 
     //상세정보 입력
