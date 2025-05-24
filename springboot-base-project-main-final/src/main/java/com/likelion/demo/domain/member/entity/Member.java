@@ -1,6 +1,7 @@
 package com.likelion.demo.domain.member.entity;
 
 import com.likelion.demo.domain.participation.entity.ProgramRecord;
+import com.likelion.demo.domain.recommendation.entity.RecommendProgram;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,6 +36,9 @@ public class Member {
     //비교과 프로그램 참여 내역
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProgramRecord> programs = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RecommendProgram> recommendPrograms = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private RecommendType recommendType;
