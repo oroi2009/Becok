@@ -19,12 +19,12 @@ public class GptClient {
     private final RestTemplate restTemplate;
 
     private static final String API_URL = "https://api.openai.com/v1/chat/completions";
-    private static final String API_KEY = "OPENAI_API_KEY";
+    private static final String API_KEY = System.getenv("OPENAI_API_KEY");;
     public String requestRecommendation(String prompt) {
         //HTTP 요청 헤더 설정
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization", API_KEY);
+        headers.set("Authorization", "Bearer " + API_KEY);
 
         Map<String, Object> body = Map.of(
                 "model", "gpt-3.5-turbo",
