@@ -33,6 +33,11 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	//selenium 크롬 드라이버
+	implementation 'org.seleniumhq.selenium:selenium-java:4.21.0'
+	implementation 'io.github.bonigarcia:webdrivermanager:5.7.0'
+  
 	implementation 'org.springframework.boot:spring-boot-starter-webflux' // WebClient
 
 }
