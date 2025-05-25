@@ -2,6 +2,8 @@ package com.likelion.demo.domain.recommendation.web.controller;
 
 import com.likelion.demo.domain.member.web.dto.CreateGoalReq;
 import com.likelion.demo.domain.member.web.dto.CreateGoalRes;
+import com.likelion.demo.domain.programData.web.dto.ProgramDto;
+import com.likelion.demo.domain.programData.web.dto.RoadmapProgramRes;
 import com.likelion.demo.domain.recommendation.service.GptRecommendationService;
 import com.likelion.demo.domain.recommendation.web.dto.GptRecommendationProgramRes;
 import com.likelion.demo.global.response.SuccessResponse;
@@ -9,10 +11,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,5 +25,12 @@ public class RecommendController {
         GptRecommendationProgramRes res = gptRecommendationService.RecommendProgram(memberId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(SuccessResponse.created(res));
+    }
+
+    //추천 로드맵 가져오기
+    @GetMapping("/recommend/roadmap/{memberId}")
+    public ResponseEntity<SuccessResponse<?>> RoadmapGet( @PathVariable Long memberId) {
+        List<RoadmapProgramRes> res = gptRecommendationService.RoadmapGet(memberId);
+        return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.ok(res));
     }
 }
