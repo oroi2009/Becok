@@ -41,4 +41,11 @@ public class RecommendController {
         RecommendProgramRes res = gptRecommendationService.RecommendProgramDetails(programId);
         return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.ok(res));
     }
+
+    //인기 비교과 상세 조회
+    @GetMapping("/popular/programs/{programId}")
+    public ResponseEntity<SuccessResponse<?>> PopularProgramDetails( @PathVariable Long programId) {
+        RecommendProgramRes res = gptRecommendationService.PopularProgramDetails(programId);
+        return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.ok(res));
+    }
 }
