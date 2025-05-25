@@ -39,6 +39,9 @@ public class Program {
     //글로벌시민의식
     private int globalCitizenship;
 
+    @Enumerated(EnumType.STRING)
+    private ProgramStatus status;
+
     private String target;
 
     private String grade;
@@ -59,4 +62,9 @@ public class Program {
     @OneToMany(mappedBy = "program", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecommendProgram> recommendPrograms = new ArrayList<>();
 
+    public static ProgramStatus calculateStatus(LocalDate start, LocalDate end, LocalDate now) {
+        if (now.isBefore(start)) return ProgramStatus.UPCOMING;
+        else if (now.isAfter(end)) return ProgramStatus.CLOSED;
+        else return ProgramStatus.ONGOING;
+    }
 }
