@@ -74,7 +74,7 @@ public class MemberServiceImple implements MemberService {
 
     //로그인
     @Override
-    public Map<String, String> login(LoginReq loginReq) {
+    public LoginRes login(LoginReq loginReq) {
         Member member = memberRepository.findByEmail(loginReq.getEmail())
                 .orElseThrow(LoginFailException::new);
 
@@ -82,10 +82,13 @@ public class MemberServiceImple implements MemberService {
             throw new LoginFailException();
         }
 
-        Map<String, String> res = new HashMap<>();
-        res.put("email", member.getEmail());
-        return res;
+        return LoginRes.builder()
+                .id(member.getId())
+                .email(member.getEmail())
+                .build();
     }
+
+
 
     //상세정보 입력
     @Override
