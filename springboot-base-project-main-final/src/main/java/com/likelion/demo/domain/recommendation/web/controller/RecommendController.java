@@ -6,6 +6,7 @@ import com.likelion.demo.domain.programData.web.dto.ProgramDto;
 import com.likelion.demo.domain.programData.web.dto.RoadmapProgramRes;
 import com.likelion.demo.domain.recommendation.service.GptRecommendationService;
 import com.likelion.demo.domain.recommendation.web.dto.GptRecommendationProgramRes;
+import com.likelion.demo.domain.recommendation.web.dto.RecommendProgramRes;
 import com.likelion.demo.global.response.SuccessResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,13 @@ public class RecommendController {
     @GetMapping("/recommend/roadmap/{memberId}")
     public ResponseEntity<SuccessResponse<?>> RoadmapGet( @PathVariable Long memberId) {
         List<RoadmapProgramRes> res = gptRecommendationService.RoadmapGet(memberId);
+        return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.ok(res));
+    }
+
+    //추천 비교과 상세 조회
+    @GetMapping("/recommend/list/program/{programId}")
+    public ResponseEntity<SuccessResponse<?>> RecommendProgramDetails( @PathVariable Long programId) {
+        RecommendProgramRes res = gptRecommendationService.RecommendProgramDetails(programId);
         return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.ok(res));
     }
 }
