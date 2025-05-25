@@ -1,6 +1,8 @@
 package com.likelion.demo.domain.member.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.likelion.demo.domain.participation.entity.ProgramRecord;
+import com.likelion.demo.domain.recommendation.entity.RecommendProgram;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,6 +38,10 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProgramRecord> programs = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<RecommendProgram> recommendPrograms = new ArrayList<>();
+
     @Enumerated(EnumType.STRING)
     private RecommendType recommendType;
 
@@ -43,5 +49,9 @@ public class Member {
     public void addProgramRecord(ProgramRecord programRecord) {
         programs.add(programRecord);
         programRecord.setMember(this);
+    }
+    public void addRecommendProgram(RecommendProgram recommendProgram) {
+        recommendPrograms.add(recommendProgram);
+        recommendProgram.setMember(this);
     }
 }
