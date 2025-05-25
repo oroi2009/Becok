@@ -154,6 +154,7 @@ public class GptRecommendationServiceImpl implements GptRecommendationService {
                 program.getLink_url(),
                 program.getStart_date(),
                 program.getEnd_date(),
+                program.getStatus(),
                 program.getPoint(),
                 program.getTags()
         );
