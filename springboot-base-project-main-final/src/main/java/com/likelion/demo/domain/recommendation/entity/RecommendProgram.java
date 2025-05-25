@@ -29,4 +29,8 @@ public class RecommendProgram {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "program_id")
     private Program program;
+
+    public Program getProgram() {
+        return this.program;
+    }
 }
