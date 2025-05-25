@@ -159,4 +159,23 @@ public class GptRecommendationServiceImpl implements GptRecommendationService {
                 program.getTags()
         );
     }
+
+    @Override
+    public RecommendProgramRes PopularProgramDetails(Long programId) {
+        //프로그램 존재 여부 확인
+        Program program = programRepository.findById(programId)
+                .orElseThrow(ListProgramNotFoundException::new);
+
+        return new RecommendProgramRes(
+                program.getId(),
+                program.getThumbnail_url(),
+                program.getTitle(),
+                program.getLink_url(),
+                program.getStart_date(),
+                program.getEnd_date(),
+                program.getStatus(),
+                program.getPoint(),
+                program.getTags()
+        );
+    }
 }

@@ -15,4 +15,7 @@ public interface GptRecommendationService {
     List<RoadmapProgramRes> RoadmapGet(Long memberId);
     //추천 비교과 상세 정보 가져오기
     RecommendProgramRes RecommendProgramDetails(Long programId);
+    //인기 비교과 상세 정보 가져오기
+    RecommendProgramRes PopularProgramDetails(Long programId);
+
 }
