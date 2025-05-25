@@ -1,0 +1,47 @@
+[
+{
+  "student_id": "송효재",
+  "track": "회계·재무경영트랙",
+  "core_competencies": ["창의융합역량", "공동체역량", "글로벌역량"],
+  "career_goal": "ERP 개발 또는 회계 분야 실무 및 말레이시아 시장 진출",
+  "activities": [
+    { "grade": 1, "semester": 1, "program": "심리 검사 및 개인 상담", "competency": "자기관리역량", "comment": "자신의 성격과 특징을 파악하고 정서적 성장의 계기를 마련함" },
+    { "grade": 1, "semester": 1, "program": "집단상담", "competency": "공동체역량", "comment": "비대면 상황 속에서도 타인과 소통하고 고민을 공유하는 경험" },
+    { "grade": 1, "semester": 1, "program": "잉글리쉬 라운지", "competency": "글로벌역량", "comment": "영어 실력 향상과 자신감 증진" },
+    { "grade": 1, "semester": 1, "program": "한성 글쓰기 대회", "competency": "창의융합역량", "comment": "결과보다 도전의 가치를 깨닫고 자신감을 회복" },
+    { "grade": 1, "semester": 1, "program": "HSP 하계 방중 대회", "competency": "창의융합역량", "comment": "창의적인 아이디어를 협업을 통해 실현해보는 경험" },
+    
+    { "grade": 1, "semester": 2, "program": "글로벌 동행 프로젝트", "competency": "글로벌역량", "comment": "국내여행을 통한 유학생과의 교류로 타문화에 대한 이해 심화 및 IT업계 관심 계기" },
+    { "grade": 1, "semester": 2, "program": "HS 진로탐색", "competency": "자기관리역량", "comment": "전시회 및 공모전을 통해 IT 업계 진로 탐색" },
+    { "grade": 1, "semester": 2, "program": "독서클럽", "competency": "창의융합역량", "comment": "창의력과 사고력 향상, 교수님과의 토론" },
+    { "grade": 1, "semester": 2, "program": "Group Speak", "competency": "글로벌역량", "comment": "영어로의 자유로운 대화 경험" },
+    { "grade": 1, "semester": 2, "program": "Global Conversation Partner", "competency": "글로벌역량", "comment": "모로코 유학생과 1:1 언어교류 및 이슬람 문화 이해" },
+    { "grade": 1, "semester": 2, "program": "한성 토익강좌", "competency": "글로벌역량", "comment": "영어 실력 향상" },
+    
+    { "grade": 2, "semester": 1, "program": "진로·취업 멘토링", "competency": "자기관리역량", "comment": "현직 개발자 멘토링을 통해 진로 방향성 확보" },
+    { "grade": 2, "semester": 1, "program": "HS 트랙진로탐색", "competency": "자기관리역량", "comment": "박람회 참여를 통해 ERP 분야에 관심 갖게 됨" },
+    { "grade": 2, "semester": 1, "program": "사회봉사단 H.U.V", "competency": "공동체역량", "comment": "지역사회 봉사활동 경험" },
+    
+    { "grade": 2, "semester": 2, "program": "IP정보검색사 자격증 과정", "competency": "창의융합역량", "comment": "ERP 관련 특허 및 라이선스 지식 습득" },
+    { "grade": 2, "semester": 2, "program": "독서클럽", "competency": "창의융합역량", "comment": "교수님과 진솔한 대화의 장 마련" },
+    { "grade": 2, "semester": 2, "program": "청년제안프로젝트", "competency": "창의융합역량", "comment": "환경 주제 협업 프로젝트, 장려상 수상" },
+    { "grade": 2, "semester": 2, "program": "동계 독서클럽 발표대회", "competency": "창의융합역량", "comment": "동물농장을 바탕으로 토론 및 발표 경험, 장려상 수상" },
+    
+    { "grade": 3, "semester": 1, "program": "창업동아리", "competency": "창의융합역량", "comment": "제조업 프로세스 및 기업 정보관리의 중요성 이해" },
+    { "grade": 3, "semester": 1, "program": "진로취업멘토링", "competency": "자기관리역량", "comment": "현직 개발자의 고충 및 마인드셋 학습" },
+    { "grade": 3, "semester": 1, "program": "독서클럽", "competency": "창의융합역량", "comment": "토론을 통해 깊은 식견과 대화법 습득" },
+    
+    { "grade": 3, "semester": 2, "program": "HS 트랙진로탐색", "competency": "자기관리역량", "comment": "(예정) 고학년을 위한 진로탐색 및 업계 동향 조사" },
+    { "grade": 3, "semester": 2, "program": "HSP (3개월 과정)", "competency": "창의융합역량", "comment": "(예정) 팀 구성 완료, 개발 실력 및 프로세스 이해도 향상 목표" },
+    { "grade": 3, "semester": 2, "program": "동계방중 독서클럽 발표대회", "competency": "창의융합역량", "comment": "(예정) ERP 도서를 주제로 경영학·컴공 학생들과 토론 및 발표 진행 예정" },
+    { "grade": 3, "semester": 2, "program": "청년제안프로젝트", "competency": "창의융합역량", "comment": "(예정) ERP 시스템의 공공기관 도입 제안, 공모전 참여 목표" },
+    
+    { "grade": 4, "semester": 1, "program": "한성인 도전이야기", "competency": "공동체역량", "comment": "유학경험 포함 다양한 도전 공유를 통해 용기 전달" },
+    { "grade": 4, "semester": 1, "program": "말레이시아 해외 유학", "competency": "글로벌역량", "comment": "ERP 시장에 대한 글로벌 감각 향상 및 말레이시아 시장 이해" },
+    
+    { "grade": 4, "semester": 2, "program": "학기장기실습 (IPP)", "competency": "창의융합역량", "comment": "(예정) ERP 혹은 회계 실무 경험, 세무사 공부 병행 계획" },
+    { "grade": 4, "semester": 2, "program": "HS-TED", "competency": "공동체역량", "comment": "(예정) 유학 및 실습 경험을 바탕으로 후배들에게 진솔한 조언 공유" }
+  ]
+}
+
+  ]

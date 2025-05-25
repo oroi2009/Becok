@@ -16,7 +16,7 @@ public interface MemberService {
     void signup(SignupReq signupReq);
 
     //로그인
-    Map<String, String> login(LoginReq loginReq);
+    LoginRes login(LoginReq loginReq);
 
     //상세정보 입력
     CreateProfileRes createProfile(CreateProfileReq createProfileReq, Long memberId);
