@@ -14,9 +14,11 @@ import com.likelion.demo.domain.recommendation.engin.GptClient;
 import com.likelion.demo.domain.recommendation.engin.GptPromptBuilder;
 import com.likelion.demo.domain.recommendation.entity.RecommendProgram;
 import com.likelion.demo.domain.recommendation.exception.RecommendNotFoundException;
+import com.likelion.demo.domain.recommendation.exception.ListProgramNotFoundException;
 import com.likelion.demo.domain.recommendation.repository.RecommendProgramRepository;
 import com.likelion.demo.domain.recommendation.web.dto.GptRecommendationProgramRes;
 import com.likelion.demo.domain.recommendation.web.dto.RecommendProgramDto;
+import com.likelion.demo.domain.recommendation.web.dto.RecommendProgramRes;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -137,5 +139,23 @@ public class GptRecommendationServiceImpl implements GptRecommendationService {
                 .collect(Collectors.toList());
 
         return  result;
+    }
+
+    @Override
+    public RecommendProgramRes RecommendProgramDetails(Long programId) {
+        //프로그램 존재 여부 확인
+        Program program = programRepository.findById(programId)
+                .orElseThrow(ListProgramNotFoundException::new);
+
+        return new RecommendProgramRes(
+                program.getId(),
+                program.getThumbnail_url(),
+                program.getTitle(),
+                program.getLink_url(),
+                program.getStart_date(),
+                program.getEnd_date(),
+                program.getPoint(),
+                program.getTags()
+        );
     }
 }
