@@ -36,6 +36,7 @@ public class MemberController {
     //로그인
     @PostMapping("/login")
     public ResponseEntity<SuccessResponse<?>> login(@RequestBody @Valid LoginReq loginReq) {
+        LoginRes loginRes = memberService.login(loginReq);
         return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.ok(memberService.login(loginReq)));
     }
 
