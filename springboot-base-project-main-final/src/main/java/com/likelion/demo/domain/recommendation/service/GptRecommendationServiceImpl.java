@@ -8,9 +8,12 @@ import com.likelion.demo.domain.member.exception.MemberNotFoundException;
 import com.likelion.demo.domain.member.repository.MemberRepository;
 import com.likelion.demo.domain.programData.entity.Program;
 import com.likelion.demo.domain.programData.repository.ProgramRepository;
+import com.likelion.demo.domain.programData.web.dto.ProgramDto;
+import com.likelion.demo.domain.programData.web.dto.RoadmapProgramRes;
 import com.likelion.demo.domain.recommendation.engin.GptClient;
 import com.likelion.demo.domain.recommendation.engin.GptPromptBuilder;
 import com.likelion.demo.domain.recommendation.entity.RecommendProgram;
+import com.likelion.demo.domain.recommendation.exception.RecommendNotFoundException;
 import com.likelion.demo.domain.recommendation.repository.RecommendProgramRepository;
 import com.likelion.demo.domain.recommendation.web.dto.GptRecommendationProgramRes;
 import com.likelion.demo.domain.recommendation.web.dto.RecommendProgramDto;
@@ -97,5 +100,42 @@ public class GptRecommendationServiceImpl implements GptRecommendationService {
                 .map(rp -> new RecommendProgramDto(rp.getId(), rp.getTitle(),rp.getProgram() != null ? rp.getProgram().getId() : null))
                 .collect(Collectors.toList());
         return new GptRecommendationProgramRes(dtoList);
+    }
+
+    @Override
+    public List<RoadmapProgramRes> RoadmapGet(Long memberId) {
+        //멤버 id를 확인하여 멤버 존재 여부 확인
+        memberRepository.findById(memberId)
+                .orElseThrow(MemberNotFoundException::new);
+        //추천 프로그램 Repository에서 memberId로 탐색
+        List<RecommendProgram> recommendPrograms = recommendProgramRepository.findAllByMemberId(memberId);
+        if (recommendPrograms.isEmpty()) {
+            throw new RecommendNotFoundException();
+        }
+        //RoadmapRes형식으로 프로그램 정보를 저장.
+        List<RoadmapProgramRes> result = recommendPrograms.stream()
+                .map(rp -> {
+                    Program p = rp.getProgram();
+                    return new RoadmapProgramRes(
+                            p.getId(),
+                            p.getTitle(),
+                            p.getGrade(),
+                            p.getStart_date(),
+                            p.getEnd_date(),
+                            p.getPoint(),
+                            p.getTags(),
+                            List.of(
+                                    p.getCreativity(),
+                                    p.getIntegration(),
+                                    p.getManagement(),
+                                    p.getInterpersonal(),
+                                    p.getGlobalCommunication(),
+                                    p.getGlobalCitizenship()
+                            )
+                    );
+                })
+                .collect(Collectors.toList());
+
+        return  result;
     }
 }
