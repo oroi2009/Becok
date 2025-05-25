@@ -3,6 +3,7 @@ package com.likelion.demo.domain.programData.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.likelion.demo.domain.programData.entity.Program;
+import com.likelion.demo.domain.programData.entity.ProgramStatus;
 import com.likelion.demo.domain.programData.repository.ProgramRepository;
 import com.likelion.demo.domain.programData.web.dto.ProgramDto;
 import lombok.RequiredArgsConstructor;
@@ -50,6 +51,7 @@ public class ProgramServiceImple implements ProgramService {
                     startDate = LocalDate.parse(parts[0].trim(), formatter);
                     endDate = LocalDate.parse(parts[1].trim(), formatter);
                 }
+                ProgramStatus status = Program.calculateStatus(startDate, endDate, LocalDate.now());
 
                 // gradeGender -> grade 분리
                 String grade = null;
@@ -95,6 +97,7 @@ public class ProgramServiceImple implements ProgramService {
                         .point(dto.getPoint())
                         .tags(tagList)
                         .hit(extractNumberFromDescription(dto.getDescription()))  // description에서 숫자 추출
+                        .status(status)
                         .build();
 
                 programRepository.save(program);
