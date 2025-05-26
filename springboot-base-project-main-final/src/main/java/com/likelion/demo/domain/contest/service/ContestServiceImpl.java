@@ -3,6 +3,7 @@ package com.likelion.demo.domain.contest.service;
 import com.likelion.demo.domain.contest.entity.Contest;
 import com.likelion.demo.domain.contest.exception.ContestNotFoundException;
 import com.likelion.demo.domain.contest.repository.ContestRepository;
+import com.likelion.demo.domain.contest.web.dto.ContestDetailRes;
 import com.likelion.demo.domain.contest.web.dto.ContestRes;
 import com.likelion.demo.global.crawler.LinkareerCrawler;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,12 @@ public class ContestServiceImpl implements ContestService {
         return contests.stream()
                 .map(ContestRes::from)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public ContestDetailRes getContestDetail(Long contestId) {
+        Contest contest = contestRepository.findById(contestId).orElseThrow(ContestNotFoundException::new);
+        return ContestDetailRes.from(contest);
     }
 
     //링커리어 데이터 연동
