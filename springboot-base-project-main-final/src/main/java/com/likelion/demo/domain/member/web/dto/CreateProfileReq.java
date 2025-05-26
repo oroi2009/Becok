@@ -25,7 +25,6 @@ public class CreateProfileReq {
     @NotEmpty(message = "관심 분야는 비어있을 수 없습니다.")
     private List<InterestType> interests;
 
-    @NotBlank(message = "비교과 내역은 비어 있을 수 없습니다.")
     private String joinedPrograms;
 
     @NotNull(message = "추천 타입은 비어있을 수 없습니다.")
