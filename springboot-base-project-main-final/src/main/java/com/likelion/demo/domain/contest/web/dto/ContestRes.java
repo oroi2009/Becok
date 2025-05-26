@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class ContestRes {
-    private Long contest_id;
+    private Long id;
     private String name;
     private String startDate;
     private String endDate;
@@ -20,7 +20,7 @@ public class ContestRes {
 
     public static ContestRes from(Contest contest) {
         return ContestRes.builder()
-                .contest_id(contest.getId())
+                .id(contest.getId())
                 .name(contest.getName())
                 .startDate(contest.getStartDate().toString())
                 .endDate(contest.getEndDate().toString())
