@@ -17,6 +17,7 @@ public class ContestRes {
     private String imgUrl;
     private String linkUrl;
     private String hits;
+    private String status;
     private boolean bookmarked; // 북마크 여부
     private boolean notification;    // 알림 여부
 
@@ -32,6 +33,7 @@ public class ContestRes {
                 .linkUrl(contest.getLinkUrl())
                 .hits(String.valueOf(contest.getHits()))
                 .Dday(contest.getDday())
+                .status(contest.getStatus())
                 .bookmarked(bookmarked)
                 .notification(notification)
                 .build();
