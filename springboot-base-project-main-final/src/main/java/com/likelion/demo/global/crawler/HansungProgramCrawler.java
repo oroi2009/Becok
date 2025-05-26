@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Component
 public class HansungProgramCrawler {
 
-    public static void main(String[] args) {
+    public static void ProgramCrawler() {
         System.setProperty("webdriver.chrome.driver", "chromedriver"); // chromedriver 경로 설정
 
 
@@ -38,7 +38,26 @@ public class HansungProgramCrawler {
 
         while (true) {
             int beforeSize = programs.size();
-            getProgramsFromPage(driver, wait, baseUrl, page, programs);
+            boolean pageSuccess = false;
+
+            for (int attempt = 1; attempt <= 3; attempt++) {
+                try {
+                    getProgramsFromPage(driver, wait, baseUrl, page, programs);
+                    pageSuccess = true;
+                    break;
+                } catch (Exception e) {
+                    System.out.println("[" + attempt + "회차] " + page + "페이지 수집 실패: " + e.getMessage());
+                    if (attempt == 3) {
+                        System.out.println(page + "페이지는 3회 시도에도 실패하여 건너뜀");
+                    }
+                }
+            }
+
+            if (!pageSuccess) {
+                page++;
+                continue; // 다음 페이지 시도
+            }
+
             if (programs.size() == beforeSize) break;
             System.out.println(page + "페이지 완료, 누적: " + programs.size() + "개");
             page++;
@@ -79,13 +98,18 @@ public class HansungProgramCrawler {
                             point = matcher.group();
                             break;
                         }
-                    } catch (Exception ignored) {}
+                    } catch (Exception ignored) {
+                    }
                 }
 
-                String style = card.findElement(By.className("cover")).getAttribute("style");
-                String imageUrl = style.split("url\\(")[1].split("\\)")[0].replace("\"", "");
-                imageUrl = imageUrl.startsWith("/") ? baseUrl + imageUrl : imageUrl;
-
+                String imageUrl = "";
+                try {
+                    String style = card.findElement(By.className("cover")).getAttribute("style");
+                    if (style != null && style.contains("url(")) {
+                        imageUrl = style.split("url\\(")[1].split("\\)")[0].replace("\"", "");
+                        imageUrl = imageUrl.startsWith("/") ? baseUrl + imageUrl : imageUrl;
+                    }
+                } catch (Exception ignored) {}
                 String detailUrl = card.findElement(By.cssSelector("a")).getAttribute("href");
 
                 String recruitPeriod = "";
@@ -122,12 +146,21 @@ public class HansungProgramCrawler {
                 System.out.println("기본 정보 오류: " + e.getMessage());
             }
         }
-
-        // 상세 페이지 열고 정보 추가
         for (JSONObject info : basicInfos) {
-            String detailUrl = (String) info.get("detail_url");
+            boolean success = fetchDetailInfoWithRetry(driver, wait, info);
+            if (!success) {
+                System.out.println("재시도 실패: " + info.get("title"));
+            }
+            programs.add(info);
+
+        }
+    }
+    // ✔ 상세 페이지 크롤링 - 실패 시 2회 재시도
+    private static boolean fetchDetailInfoWithRetry(WebDriver driver, WebDriverWait wait, JSONObject info) {
+        for (int attempt = 1; attempt <= 3; attempt++) {
             try {
-                // 항상 메인 탭으로 이동 후 팝업 열기
+                String detailUrl = (String) info.get("detail_url");
+
                 ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
                 driver.switchTo().window(tabs.get(0));
                 ((JavascriptExecutor) driver).executeScript("window.open(arguments[0])", detailUrl);
@@ -182,7 +215,7 @@ public class HansungProgramCrawler {
                 try {
                     List<WebElement> rects = driver.findElements(By.cssSelector("g.highcharts-series rect"));
                     for (WebElement rect : rects) {
-                        String height = rect.getAttribute("height").replaceAll("[^\\d.]", ""); // 숫자만 추출
+                        String height = rect.getAttribute("height").replaceAll("[^\\d.]", "");
                         int rounded = (int) Math.round(Double.parseDouble(height));
                         competencies.add(String.valueOf(rounded));
                     }
@@ -198,10 +231,10 @@ public class HansungProgramCrawler {
                 info.put("competencies", competencies);
                 info.put("description", description);
 
-                programs.add(info);
+                return true;
 
             } catch (Exception e) {
-                System.out.println("상세 팝업 오류: " + e.getMessage());
+                System.out.println("[" + attempt + "회차] 상세 팝업 오류: " + e.getMessage());
                 try {
                     driver.close();
                     ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
@@ -209,5 +242,6 @@ public class HansungProgramCrawler {
                 } catch (Exception ignored) {}
             }
         }
-    }
+        return false;
+        }
 }

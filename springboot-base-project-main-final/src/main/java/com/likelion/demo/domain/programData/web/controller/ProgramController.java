@@ -19,11 +19,8 @@ public class ProgramController {
     private final ProgramService programService;
 
     //비교과 프로그램 저장
-    @PostMapping("/import")
-    public ResponseEntity<SuccessResponse<?>> importPrograms() {
+    public void importPrograms() {
         programService.importProgramsFromJson();
-
-        return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.created(null));
     }
 
 }
