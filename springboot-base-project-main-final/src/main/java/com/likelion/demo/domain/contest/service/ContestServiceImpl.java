@@ -29,14 +29,28 @@ public class ContestServiceImpl implements ContestService {
         }
 
         return contests.stream()
-                .map(ContestRes::from)
+                .map(contest -> {
+                    // TODO: 북마크/알림 여부를 반환 로직 필요
+//                    boolean isBookmarked = bookmarkRepository.existsByMemberIdAndContestId(memberId, contest.getId());
+//                    boolean hasNotification = notificationRepository.existsByMemberIdAndContestId(memberId, contest.getId());
+                    boolean isBookmarked = true;
+                    boolean hasNotification = true;
+
+                    return ContestRes.from(contest, isBookmarked, hasNotification);
+                })
                 .collect(Collectors.toList());
     }
 
     @Override
     public ContestDetailRes getContestDetail(Long contestId) {
         Contest contest = contestRepository.findById(contestId).orElseThrow(ContestNotFoundException::new);
-        return ContestDetailRes.from(contest);
+        // TODO: 북마크/알림 여부를 반환 로직 필요
+//                    boolean isBookmarked = bookmarkRepository.existsByMemberIdAndContestId(memberId, contest.getId());
+//                    boolean hasNotification = notificationRepository.existsByMemberIdAndContestId(memberId, contest.getId());
+
+        boolean isBookmarked = true;
+        boolean hasNotification = true;
+        return ContestDetailRes.from(contest, isBookmarked, hasNotification);
     }
 
     //링커리어 데이터 연동

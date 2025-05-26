@@ -6,6 +6,7 @@ import com.likelion.demo.domain.programData.web.dto.ProgramDto;
 import com.likelion.demo.domain.programData.web.dto.RoadmapProgramRes;
 import com.likelion.demo.domain.recommendation.service.GptRecommendationService;
 import com.likelion.demo.domain.recommendation.web.dto.GptRecommendationProgramRes;
+import com.likelion.demo.domain.recommendation.web.dto.ProgramDetailRes;
 import com.likelion.demo.domain.recommendation.web.dto.RecommendProgramRes;
 import com.likelion.demo.global.response.SuccessResponse;
 import jakarta.validation.Valid;
@@ -35,17 +36,17 @@ public class RecommendController {
         return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.ok(res));
     }
 
-    //추천 비교과 상세 조회
+    //추천 비교과 상세 조회 --- 사용 x
     @GetMapping("/recommend/list/program/{programId}")
     public ResponseEntity<SuccessResponse<?>> RecommendProgramDetails( @PathVariable Long programId) {
         RecommendProgramRes res = gptRecommendationService.RecommendProgramDetails(programId);
         return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.ok(res));
     }
 
-    //인기 비교과 상세 조회
-    @GetMapping("/popular/programs/{programId}")
+    //비교과 상세 조회
+    @GetMapping("/programs/{programId}")
     public ResponseEntity<SuccessResponse<?>> PopularProgramDetails( @PathVariable Long programId) {
-        RecommendProgramRes res = gptRecommendationService.PopularProgramDetails(programId);
+        ProgramDetailRes res = gptRecommendationService.PopularProgramDetails(programId);
         return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.ok(res));
     }
 }

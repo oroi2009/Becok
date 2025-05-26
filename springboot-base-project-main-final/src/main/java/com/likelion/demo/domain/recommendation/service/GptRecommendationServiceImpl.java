@@ -8,7 +8,6 @@ import com.likelion.demo.domain.member.exception.MemberNotFoundException;
 import com.likelion.demo.domain.member.repository.MemberRepository;
 import com.likelion.demo.domain.programData.entity.Program;
 import com.likelion.demo.domain.programData.repository.ProgramRepository;
-import com.likelion.demo.domain.programData.web.dto.ProgramDto;
 import com.likelion.demo.domain.programData.web.dto.RoadmapProgramRes;
 import com.likelion.demo.domain.recommendation.engin.GptClient;
 import com.likelion.demo.domain.recommendation.engin.GptPromptBuilder;
@@ -17,6 +16,7 @@ import com.likelion.demo.domain.recommendation.exception.RecommendNotFoundExcept
 import com.likelion.demo.domain.recommendation.exception.ListProgramNotFoundException;
 import com.likelion.demo.domain.recommendation.repository.RecommendProgramRepository;
 import com.likelion.demo.domain.recommendation.web.dto.GptRecommendationProgramRes;
+import com.likelion.demo.domain.recommendation.web.dto.ProgramDetailRes;
 import com.likelion.demo.domain.recommendation.web.dto.RecommendProgramDto;
 import com.likelion.demo.domain.recommendation.web.dto.RecommendProgramRes;
 import jakarta.transaction.Transactional;
@@ -161,20 +161,29 @@ public class GptRecommendationServiceImpl implements GptRecommendationService {
     }
 
     @Override
-    public RecommendProgramRes PopularProgramDetails(Long programId) {
+    public ProgramDetailRes PopularProgramDetails(Long programId) {
         //프로그램 존재 여부 확인
         Program program = programRepository.findById(programId)
                 .orElseThrow(ListProgramNotFoundException::new);
 
-        return new RecommendProgramRes(
+        // TODO: 북마크, 알림 관련 로직 구현 후 수정 필요
+//         boolean isBookmarked = bookmarkRepository.existsByMemberIdAndContestId(memberId, contest.getId());
+//         boolean hasNotification = notificationRepository.existsByMemberIdAndContestId(memberId, contest.getId());
+
+        boolean bookmarked = true;
+        boolean notification = true;
+
+        return new ProgramDetailRes(
                 program.getId(),
                 program.getThumbnail_url(),
                 program.getTitle(),
                 program.getLink_url(),
                 program.getStart_date(),
                 program.getEnd_date(),
-                program.getStatus(),
                 program.getPoint(),
+                program.getStatus(),
+                bookmarked,
+                notification,
                 program.getTags()
         );
     }
