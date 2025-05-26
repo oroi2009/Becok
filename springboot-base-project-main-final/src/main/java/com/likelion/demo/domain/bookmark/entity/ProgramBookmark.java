@@ -2,6 +2,7 @@ package com.likelion.demo.domain.bookmark.entity;
 
 import com.likelion.demo.domain.contest.entity.Contest;
 import com.likelion.demo.domain.member.entity.Member;
+import com.likelion.demo.domain.programData.entity.Program;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,8 +10,8 @@ import lombok.Getter;
 @Entity
 @Getter
 @Builder
-public class ContestBookmark {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ProgramBookmark {
+    @Id @GeneratedValue
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -18,7 +19,6 @@ public class ContestBookmark {
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "contest_id")
-    private Contest contest;
-
+    @JoinColumn(name = "program_id")
+    private Program program;
 }
