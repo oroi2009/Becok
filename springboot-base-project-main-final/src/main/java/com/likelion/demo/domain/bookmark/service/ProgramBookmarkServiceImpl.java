@@ -1,10 +1,7 @@
 package com.likelion.demo.domain.bookmark.service;
 
-import com.likelion.demo.domain.bookmark.entity.ContestBookmark;
 import com.likelion.demo.domain.bookmark.entity.ProgramBookmark;
 import com.likelion.demo.domain.bookmark.repository.ProgramBookmarkRepository;
-import com.likelion.demo.domain.contest.entity.Contest;
-import com.likelion.demo.domain.contest.repository.ContestRepository;
 import com.likelion.demo.domain.member.entity.Member;
 import com.likelion.demo.domain.member.exception.MemberNotFoundException;
 import com.likelion.demo.domain.member.repository.MemberRepository;
@@ -16,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ProgramBookmarkImpl implements ProgramBookmarkService {
+public class ProgramBookmarkServiceImpl implements ProgramBookmarkService {
     private final ProgramBookmarkRepository repository;
     private final MemberRepository memberRepository;
     private final ProgramRepository programRepository;
