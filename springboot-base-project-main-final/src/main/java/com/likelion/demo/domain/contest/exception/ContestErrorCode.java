@@ -8,8 +8,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ContestErrorCode implements BaseResponseCode {
     //404 유저가 존재하지 않음
-    CONTEST_NOT_FOUND_404("CONTEST_NOT_FOUND_404_1",404,"해당 유저는 존재하지 않습니다."),
-    NO_POPULAR_CONTEST("CONTEST_NO_POPULAR_400_1", 404, "이미 사용 중인 아이디입니다.");
+    CONTEST_NOT_FOUND_404("CONTEST_NOT_FOUND_404_1",404,"표시할 인기 공모전을 찾지 못했습니다."),
+    NO_POPULAR_CONTEST("CONTEST_NO_POPULAR_404_2", 404, "표시할 인기 공모전이 없습니다.");
 
     private final String code;
     private final int httpStatus;
