@@ -2,8 +2,11 @@ package com.likelion.demo.domain.bookmark.service;
 
 import com.likelion.demo.domain.bookmark.entity.ContestBookmark;
 import com.likelion.demo.domain.bookmark.repository.ContestBookmarkRepository;
+import com.likelion.demo.domain.contest.exception.ContestNotFoundException;
 import com.likelion.demo.domain.contest.repository.ContestRepository;
+import com.likelion.demo.domain.member.exception.MemberNotFoundException;
 import com.likelion.demo.domain.member.repository.MemberRepository;
+import com.likelion.demo.domain.programData.exception.ProgramNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +31,15 @@ public class ContestBookmarkServiceImpl implements ContestBookmarkService {
         }
 
         // 북마크가 안 눌려있는 경우
+        var member = memberRepository.findById(memberId)
+                .orElseThrow(MemberNotFoundException::new); // 404 : 회원 정보 없음
+
+        var contest = contestRepository.findById(contestId)
+                .orElseThrow(ContestNotFoundException::new); // 404 : 공모전 정보 없음
+
         ContestBookmark bookmark = ContestBookmark.builder()
-                .member(memberRepository.getReferenceById(memberId))
-                .contest(contestRepository.getReferenceById(contestId))
+                .member(member)
+                .contest(contest)
                 .build();
 
         contestBookmarkRepository.save(bookmark);
