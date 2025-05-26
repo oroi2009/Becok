@@ -18,7 +18,10 @@ public class ContestRes {
     private String linkUrl;
     private String hits;
 
-    public static ContestRes from(Contest contest) {
+    private boolean bookmarked; // 북마크 여부
+    private boolean notification;    // 알람 여부
+
+    public static ContestRes from(Contest contest, boolean bookmarked, boolean alramed) {
         return ContestRes.builder()
                 .id(contest.getId())
                 .name(contest.getName())
@@ -28,7 +31,10 @@ public class ContestRes {
                 .category(contest.getCategory())
                 .imgUrl(contest.getThumbnailUrl())
                 .linkUrl(contest.getLinkUrl())
+                .bookmarked(bookmarked)
+                .notification(alramed)
                 .hits(String.valueOf(contest.getHits()))
+
                 .Dday(contest.getDday())
                 .build();
     }
