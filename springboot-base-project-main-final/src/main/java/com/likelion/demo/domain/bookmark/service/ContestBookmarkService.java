@@ -1,5 +1,5 @@
 package com.likelion.demo.domain.bookmark.service;
 
 public interface ContestBookmarkService {
-    boolean toggle(Long contestId, Long programId);
+    boolean toggle(Long memberId, Long contentId);
 }
