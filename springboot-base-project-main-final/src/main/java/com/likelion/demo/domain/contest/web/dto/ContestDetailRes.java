@@ -30,7 +30,7 @@ public class ContestDetailRes {
                 .startDate(String.valueOf(c.getStartDate()))
                 .endDate(String.valueOf(c.getEndDate()))
                 .Dday(c.getDday())
-                .status(c.getStatus().toString())
+                .status(c.getStatus())
                 .category(c.getCategory())
                 .organizer(c.getOrganizer())
                 .build();
