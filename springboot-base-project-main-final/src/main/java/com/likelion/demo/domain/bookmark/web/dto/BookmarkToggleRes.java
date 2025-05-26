@@ -1,4 +1,6 @@
 package com.likelion.demo.domain.bookmark.web.dto;
 
-public record BookmarkToggleRes() {
+public record BookmarkToggleRes(
+        String status // on / off
+) {
 }
