@@ -7,25 +7,33 @@ import com.likelion.demo.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
-public class ContestBookmarkImpl implements ContestBookmarkService {
-    private final ContestBookmarkRepository repository;
+public class ContestBookmarkServiceImpl implements ContestBookmarkService {
+    private final ContestBookmarkRepository contestBookmarkRepository;
     private final MemberRepository memberRepository;
     private final ContestRepository contestRepository;
 
     @Override
-    public boolean toggle(Long contestId, Long memberId) {
-        boolean exists = repository.existsByMember_IdAndProgram_Id(memberId, contestId);
-        if (exists) {
-            repository.deleteByMember_IdAndProgram_Id(memberId, contestId);
-            return true;
+    public boolean toggle(Long memberId, Long contestId) {
+        Optional<ContestBookmark> foundBookmark =
+                contestBookmarkRepository.findByMember_IdAndContest_Id(memberId, contestId);
+
+        // 북마크가 눌려있는 경우
+        if (foundBookmark.isPresent()) {
+            contestBookmarkRepository.delete(foundBookmark.get());
+            return false; // 북마크 OFF
         }
+
+        // 북마크가 안 눌려있는 경우
         ContestBookmark bookmark = ContestBookmark.builder()
                 .member(memberRepository.getReferenceById(memberId))
                 .contest(contestRepository.getReferenceById(contestId))
                 .build();
-        repository.save(bookmark);
-        return true;
+
+        contestBookmarkRepository.save(bookmark);
+        return true; // 북마크 ON
     }
 }

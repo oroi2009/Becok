@@ -21,8 +21,8 @@ public class BookmarkController {
     public SuccessResponse<BookmarkToggleRes> toggleBookmark(@PathVariable Long memberId,
                                                              @RequestBody BookmarkToggleReq request) {
         boolean isOn = switch (request.getType()) {
-            case "program" -> programBookmarkService.toggle(request.getContentId(), memberId);
-            case "contest" -> contestBookmarkService.toggle(request.getContentId(), memberId);
+            case "program" -> programBookmarkService.toggle(memberId, request.getContentId());
+            case "contest" -> contestBookmarkService.toggle(memberId, request.getContentId());
             // 400 : 잘못된 북마크 타입
             default -> throw new InvalidBookmarkTypeException();
         };
