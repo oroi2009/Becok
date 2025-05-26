@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/popular")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class ContestController {
 
     private final ContestService contestService;
 
-    @GetMapping("/all")
+    @GetMapping("/contests/popular")
     public ResponseEntity<SuccessResponse<List<ContestRes>>> getPopularContests() {
         List<ContestRes> contests = contestService.getPopularContests();
 
