@@ -6,7 +6,6 @@ import com.likelion.demo.domain.contest.exception.ContestNotFoundException;
 import com.likelion.demo.domain.contest.repository.ContestRepository;
 import com.likelion.demo.domain.member.exception.MemberNotFoundException;
 import com.likelion.demo.domain.member.repository.MemberRepository;
-import com.likelion.demo.domain.programData.exception.ProgramNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
