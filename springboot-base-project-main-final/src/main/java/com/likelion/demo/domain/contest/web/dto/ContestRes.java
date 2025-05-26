@@ -14,6 +14,7 @@ public class ContestRes {
     private String organizer;
     private String category;
     private String Dday;
+    private String status;
     private String imgUrl;
     private String linkUrl;
     private String hits;
@@ -22,6 +23,7 @@ public class ContestRes {
         return ContestRes.builder()
                 .id(contest.getId())
                 .name(contest.getName())
+                .status(contest.getStatus())
                 .startDate(contest.getStartDate().toString())
                 .endDate(contest.getEndDate().toString())
                 .organizer(contest.getOrganizer())
