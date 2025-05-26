@@ -6,6 +6,7 @@ import com.likelion.demo.domain.programData.entity.Program;
 import com.likelion.demo.domain.programData.entity.ProgramStatus;
 import com.likelion.demo.domain.programData.repository.ProgramRepository;
 import com.likelion.demo.domain.programData.web.dto.ProgramDto;
+import com.likelion.demo.global.crawler.HansungProgramCrawler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,10 +28,11 @@ public class ProgramServiceImple implements ProgramService {
 
     private final ProgramRepository programRepository;
     private final ObjectMapper objectMapper; // JSON 파싱용
-
+    private final HansungProgramCrawler hansungProgramCrawler;
 
     @Override
     public void importProgramsFromJson()  {
+        hansungProgramCrawler.ProgramCrawler();
         programRepository.deleteAll();
 
         try (InputStream inputStream = getClass().getResourceAsStream("/programs.json")) {
