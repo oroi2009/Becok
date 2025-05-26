@@ -19,9 +19,10 @@ public class ContestDetailRes {
     private String status;
     private String category;
     private String organizer;
+    private boolean bookmarked; // 북마크 여부
+    private boolean notification;    // 알림 여부
 
-
-    public static ContestDetailRes from(Contest c) {
+    public static ContestDetailRes from(Contest c, boolean bookmarked, boolean notification) {
         return ContestDetailRes.builder()
                 .id(c.getId())
                 .name(c.getName())
@@ -33,6 +34,8 @@ public class ContestDetailRes {
                 .status(c.getStatus())
                 .category(c.getCategory())
                 .organizer(c.getOrganizer())
+                .bookmarked(bookmarked)
+                .notification(notification)
                 .build();
 
     }
