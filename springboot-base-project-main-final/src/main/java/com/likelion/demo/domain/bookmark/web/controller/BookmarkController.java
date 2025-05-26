@@ -1,5 +1,6 @@
 package com.likelion.demo.domain.bookmark.web.controller;
 
+import com.likelion.demo.domain.bookmark.exception.InvalidBookmarkTypeException;
 import com.likelion.demo.domain.bookmark.service.ContestBookmarkService;
 import com.likelion.demo.domain.bookmark.service.ProgramBookmarkService;
 import com.likelion.demo.domain.bookmark.web.dto.BookmarkToggleReq;
@@ -22,7 +23,8 @@ public class BookmarkController {
         boolean isOn = switch (request.getType()) {
             case "program" -> programBookmarkService.toggle(request.getContentId(), memberId);
             case "contest" -> contestBookmarkService.toggle(request.getContentId(), memberId);
-            default -> throw new IllegalArgumentException("Invalid bookmark type: " + request.getType());
+            // 400 : 잘못된 북마크 타입
+            default -> throw new InvalidBookmarkTypeException();
         };
 
         BookmarkToggleRes response = new BookmarkToggleRes(isOn ? "on" : "off");
