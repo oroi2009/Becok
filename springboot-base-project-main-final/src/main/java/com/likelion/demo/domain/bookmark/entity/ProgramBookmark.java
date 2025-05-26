@@ -4,14 +4,18 @@ import com.likelion.demo.domain.contest.entity.Contest;
 import com.likelion.demo.domain.member.entity.Member;
 import com.likelion.demo.domain.programData.entity.Program;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProgramBookmark {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
