@@ -4,6 +4,7 @@ import com.likelion.demo.domain.programData.web.dto.RoadmapProgramRes;
 import com.likelion.demo.domain.recommendation.service.GptRecommendationService;
 import com.likelion.demo.domain.recommendation.web.dto.GptRecommendationProgramRes;
 import com.likelion.demo.domain.recommendation.web.dto.ProgramDetailRes;
+import com.likelion.demo.domain.recommendation.web.dto.RecommendContestRes;
 import com.likelion.demo.domain.recommendation.web.dto.RecommendProgramRes;
 import com.likelion.demo.global.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +37,8 @@ public class RecommendController {
     //추천 공모전 리스트 조회
     @GetMapping("/recommend/list/{memberId}")
     public ResponseEntity<SuccessResponse<?>> getRecommendContestList(@PathVariable Long memberId) {
-        return null;
+        List<RecommendContestRes> res = gptRecommendationService.getRecommendContest(memberId);
+        return ResponseEntity.ok(SuccessResponse.ok(res));
     }
 
     //추천 비교과 상세 조회 --- 사용 x
