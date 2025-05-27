@@ -37,20 +37,24 @@ public class RememberServiceImpl implements RememberService {
 
         if ("bookmark".equalsIgnoreCase(view)) {
             cbRepo.findByMember_Id(memberId).forEach(cb -> {
-                Contest c = contestRepo.getReferenceById(cb.getContest().getId());
+                Contest c = contestRepo.findById(cb.getContest().getId())
+                        .orElseThrow(() -> new RuntimeException("Contest not found"));
                 result.add(toDto(cb.getId(), "contest", c.getId(), c.getName(), c.getStartDate(), c.getEndDate()));
             });
             pbRepo.findByMember_Id(memberId).forEach(pb -> {
-                Program p = programRepo.getReferenceById(pb.getProgram().getId());
+                Program p = programRepo.findById(pb.getProgram().getId())
+                        .orElseThrow(() -> new RuntimeException("Program not found"));
                 result.add(toDto(pb.getId(), "program", p.getId(), p.getTitle(), p.getStart_date(), p.getEnd_date()));
             });
         } else if ("notification".equalsIgnoreCase(view)) {
             cnRepo.findByMember_Id(memberId).forEach(n -> {
-                Contest c = contestRepo.getReferenceById(n.getContest().getId());
+                Contest c = contestRepo.findById(n.getContest().getId())
+                        .orElseThrow(() -> new RuntimeException("Contest not found"));
                 result.add(toDto(n.getId(), "contest", c.getId(), c.getName(), c.getStartDate(), c.getEndDate()));
             });
             pnRepo.findByMember_Id(memberId).forEach(n -> {
-                Program p = programRepo.getReferenceById(n.getProgram().getId());
+                Program p = programRepo.findById(n.getProgram().getId())
+                        .orElseThrow(() -> new RuntimeException("Program not found"));
                 result.add(toDto(n.getId(), "program", p.getId(), p.getTitle(), p.getStart_date(), p.getEnd_date()));
             });
         } else {
