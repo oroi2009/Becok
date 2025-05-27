@@ -2,10 +2,12 @@ package com.likelion.demo.domain.programData.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.likelion.demo.domain.bookmark.repository.ProgramBookmarkRepository;
 import com.likelion.demo.domain.programData.entity.Program;
 import com.likelion.demo.domain.programData.entity.ProgramStatus;
 import com.likelion.demo.domain.programData.repository.ProgramRepository;
 import com.likelion.demo.domain.programData.web.dto.ProgramDto;
+import com.likelion.demo.domain.programData.web.dto.ProgramPopularRes;
 import com.likelion.demo.global.crawler.HansungProgramCrawler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,8 @@ public class ProgramServiceImple implements ProgramService {
     private final ProgramRepository programRepository;
     private final ObjectMapper objectMapper; // JSON 파싱용
     private final HansungProgramCrawler hansungProgramCrawler;
+    private final ProgramBookmarkRepository bookmarkRepository;
+
 
     @Override
     public void importProgramsFromJson()  {
@@ -126,6 +130,22 @@ public class ProgramServiceImple implements ProgramService {
             return Integer.parseInt(m.group(1));
         }
         return 0;
+    }
+
+    @Override
+    public List<ProgramPopularRes> getPopularPrograms(Long memberId) {
+        var programs = programRepository.findTop5ByOrderByHitDesc();
+        if (programs.isEmpty()) {
+            throw new NoPopularContentException("program");
+        }
+        return programs.stream()
+                .map(p -> ProgramPopularRes.from(
+                        p,
+                        memberId,
+                        bookmarkRepository
+
+                ))
+                .collect(Collectors.toList());
     }
 }
 

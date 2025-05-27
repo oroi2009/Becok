@@ -4,6 +4,8 @@ import com.likelion.demo.domain.contest.entity.Contest;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDate;
+
 @Getter
 @Builder
 public class ContestRes {
@@ -22,6 +24,18 @@ public class ContestRes {
     private boolean notification;    // 알림 여부
 
     public static ContestRes from(Contest contest, boolean bookmarked, boolean notification) {
+        // status 계산
+        LocalDate today = LocalDate.now();
+        String status;
+        int dday;
+        if (today.isBefore(contest.getStartDate())) {
+            status = "모집예정";
+        } else if (!today.isAfter(contest.getEndDate())) {
+            status = "모집중";
+        } else {
+            status = "모집마감";
+        }
+
         return ContestRes.builder()
                 .id(contest.getId())
                 .name(contest.getName())

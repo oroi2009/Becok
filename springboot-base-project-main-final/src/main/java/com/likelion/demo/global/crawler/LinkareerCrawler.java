@@ -108,6 +108,16 @@ public class LinkareerCrawler {
                             Dday = ddayEls.get(0).getText().trim();
                         }
 
+                        String DetailUrl = "";
+                        try {
+                            WebElement hpEl = driver.findElement(
+                                    By.xpath("//dt[contains(text(),'홈페이지')]/following-sibling::dd[1]//a")
+                            );
+                            DetailUrl = hpEl.getAttribute("href");
+                        } catch (Exception e) {
+                            System.out.println("홈페이지 URL 추출 실패: " + linkUrl);
+                        }
+
                         Contest contest = Contest.builder()
                                 .name(title)
                                 .startDate(startDate)
@@ -116,7 +126,6 @@ public class LinkareerCrawler {
                                 .category(category)
                                 .thumbnailUrl(thumbnailUrl)
                                 .linkUrl(linkUrl)
-                                .status("모집 중")
                                 .hits(hits)
                                 .Dday(Dday)
                                 .build();
