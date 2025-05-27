@@ -23,7 +23,7 @@ public class ContestPopularRes {
     private boolean bookmarked; // 북마크 여부
     private boolean notification;    // 알림 여부
 
-    public static ContestPopularRes from(Contest contest, boolean bookmarked, boolean notification) {
+    public static ContestPopularRes from(Contest contest) {
         // status 계산
         LocalDate today = LocalDate.now();
         String status;
@@ -48,8 +48,6 @@ public class ContestPopularRes {
                 .hits(String.valueOf(contest.getHits()))
                 .Dday(contest.getDday())
                 .status(contest.getStatus())
-                .bookmarked(bookmarked)
-                .notification(notification)
                 .build();
     }
 }

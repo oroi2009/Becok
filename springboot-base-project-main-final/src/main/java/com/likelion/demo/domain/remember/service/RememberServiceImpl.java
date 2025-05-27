@@ -4,6 +4,8 @@ import com.likelion.demo.domain.bookmark.repository.ContestBookmarkRepository;
 import com.likelion.demo.domain.bookmark.repository.ProgramBookmarkRepository;
 import com.likelion.demo.domain.contest.entity.Contest;
 import com.likelion.demo.domain.contest.repository.ContestRepository;
+import com.likelion.demo.domain.notification.repository.ContestNotificationRepository;
+import com.likelion.demo.domain.notification.repository.ProgramNotificationRepository;
 import com.likelion.demo.domain.programData.entity.Program;
 import com.likelion.demo.domain.programData.repository.ProgramRepository;
 import com.likelion.demo.domain.remember.exception.NoRememberException;
@@ -16,16 +18,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
 public class RememberServiceImpl implements RememberService {
     private final ContestBookmarkRepository cbRepo;
     private final ProgramBookmarkRepository pbRepo;
-//    private final ContestNotificationRepository cnRepo;
-//    private final ProgramNotificationRepository pnRepo;
+    private final ContestNotificationRepository cnRepo;
+    private final ProgramNotificationRepository pnRepo;
     private final ContestRepository contestRepo;
     private final ProgramRepository programRepo;
 
@@ -36,36 +36,29 @@ public class RememberServiceImpl implements RememberService {
         List<RememberRes> result = new ArrayList<>();
 
         if ("bookmark".equalsIgnoreCase(view)) {
-            Stream<RememberRes> contestStream = cbRepo.findByMember_Id(memberId).stream()
-                    .map(cb -> {
-                        var c = cb.getContest();
-                        return toDto(
-                                cb.getId(),
-                                "contest",
-                                c.getId(),
-                                c.getName(),
-                                c.getStartDate(),
-                                c.getEndDate()
-                        );
-                    });
-            Stream<RememberRes> programStream = pbRepo.findByMember_Id(memberId).stream()
-                    .map(pb -> {
-                        var p = pb.getProgram();
-                        return toDto(
-                                pb.getId(),
-                                "program",
-                                p.getId(),
-                                p.getTitle(),
-                                p.getStart_date(),
-                                p.getEnd_date()
-                        );
-                    });
-            // 3) 두 스트림을 합쳐 리스트로
-            List<RememberRes> bookmarks = Stream
-                    .concat(contestStream, programStream)
-                    .collect(Collectors.toList());
+            cbRepo.findByMember_Id(memberId).forEach(cb -> {
+                Contest c = contestRepo.getReferenceById(cb.getContest().getId());
+                result.add(toDto(cb.getId(), "contest", c.getId(), c.getName(), c.getStartDate(), c.getEndDate()));
+            });
+            pbRepo.findByMember_Id(memberId).forEach(pb -> {
+                Program p = programRepo.getReferenceById(pb.getProgram().getId());
+                result.add(toDto(pb.getId(), "program", p.getId(), p.getTitle(), p.getStart_date(), p.getEnd_date()));
+            });
+        } else if ("notification".equalsIgnoreCase(view)) {
+            cnRepo.findByMember_Id(memberId).forEach(n -> {
+                Contest c = contestRepo.getReferenceById(n.getContest().getId());
+                result.add(toDto(n.getId(), "contest", c.getId(), c.getName(), c.getStartDate(), c.getEndDate()));
+            });
+            pnRepo.findByMember_Id(memberId).forEach(n -> {
+                Program p = programRepo.getReferenceById(n.getProgram().getId());
+                result.add(toDto(n.getId(), "program", p.getId(), p.getTitle(), p.getStart_date(), p.getEnd_date()));
+            });
+        } else {
+            throw new IllegalArgumentException("view 파라미터는 'bookmark' 또는 'notification'이어야 합니다.");
+        }
 
-            result.addAll(bookmarks);
+        if (result.isEmpty()) {
+            throw new NoRememberException();
         }
         return result;
     }

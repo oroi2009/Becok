@@ -2,12 +2,15 @@ package com.likelion.demo.domain.bookmark.service;
 
 import com.likelion.demo.domain.bookmark.entity.ContestBookmark;
 import com.likelion.demo.domain.bookmark.repository.ContestBookmarkRepository;
+import com.likelion.demo.domain.contest.entity.Contest;
 import com.likelion.demo.domain.contest.exception.ContestNotFoundException;
 import com.likelion.demo.domain.contest.repository.ContestRepository;
+import com.likelion.demo.domain.member.entity.Member;
 import com.likelion.demo.domain.member.exception.MemberNotFoundException;
 import com.likelion.demo.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 

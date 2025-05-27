@@ -1,10 +1,12 @@
 package com.likelion.demo.domain.contest.service;
 
+import com.likelion.demo.domain.bookmark.repository.ContestBookmarkRepository;
 import com.likelion.demo.domain.contest.entity.Contest;
 import com.likelion.demo.domain.contest.exception.ContestNotFoundException;
 import com.likelion.demo.domain.contest.repository.ContestRepository;
 import com.likelion.demo.domain.contest.web.dto.ContestDetailRes;
 import com.likelion.demo.domain.contest.web.dto.ContestPopularRes;
+import com.likelion.demo.domain.notification.repository.ContestNotificationRepository;
 import com.likelion.demo.global.crawler.LinkareerCrawler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ContestServiceImpl implements ContestService {
-
+    private final ContestBookmarkRepository bookmarkRepository;
+    private final ContestNotificationRepository notificationRepository;
     private final ContestRepository contestRepository;
     private final LinkareerCrawler linkareerCrawler;
 
@@ -29,27 +32,17 @@ public class ContestServiceImpl implements ContestService {
         }
 
         return contests.stream()
-                .map(contest -> {
-                    // TODO: 북마크/알림 여부를 반환 로직 필요
-//                    boolean isBookmarked = bookmarkRepository.existsByMemberIdAndContestId(memberId, contest.getId());
-//                    boolean hasNotification = notificationRepository.existsByMemberIdAndContestId(memberId, contest.getId());
-                    boolean isBookmarked = true;
-                    boolean hasNotification = true;
-
-                    return ContestPopularRes.from(contest, isBookmarked, hasNotification);
-                })
+                .map(contest -> ContestPopularRes.from(contest))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public ContestDetailRes getContestDetail(Long contestId) {
+    public ContestDetailRes getContestDetail(Long memberId, Long contestId) {
         Contest contest = contestRepository.findById(contestId).orElseThrow(ContestNotFoundException::new);
         // TODO: 북마크/알림 여부를 반환 로직 필요
-//                    boolean isBookmarked = bookmarkRepository.existsByMemberIdAndContestId(memberId, contest.getId());
-//                    boolean hasNotification = notificationRepository.existsByMemberIdAndContestId(memberId, contest.getId());
+        boolean isBookmarked = bookmarkRepository.existsByMemberIdAndContestId(memberId, contest.getId());
+        boolean hasNotification = notificationRepository.existsByMemberIdAndContestId(memberId, contest.getId());
 
-        boolean isBookmarked = true;
-        boolean hasNotification = true;
         return ContestDetailRes.from(contest, isBookmarked, hasNotification);
     }
 

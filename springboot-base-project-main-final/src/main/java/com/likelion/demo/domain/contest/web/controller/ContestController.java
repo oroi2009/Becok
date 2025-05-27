@@ -7,10 +7,7 @@ import com.likelion.demo.global.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,8 +25,8 @@ public class ContestController {
     }
 
     @GetMapping("/{contestId}")
-    public ResponseEntity<SuccessResponse<ContestDetailRes>> getContestDetail(@PathVariable Long contestId) {
-        ContestDetailRes detail = contestService.getContestDetail(contestId);
+    public ResponseEntity<SuccessResponse<ContestDetailRes>> getContestDetail(@RequestParam Long memberId, @PathVariable Long contestId) {
+        ContestDetailRes detail = contestService.getContestDetail(memberId, contestId);
         return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.ok(detail));
     }
 }
