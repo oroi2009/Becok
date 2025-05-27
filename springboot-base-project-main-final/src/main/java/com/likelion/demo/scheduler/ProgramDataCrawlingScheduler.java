@@ -20,7 +20,10 @@ public class ProgramDataCrawlingScheduler {
     @PostConstruct
     public void runAtStartup() {
         System.out.println("[서버 시작 시 실행] 비교과 프로그램 동기화 시작...");
-//        programService.importProgramsFromJson();
+        programService.importProgramsFromJson();
+        System.out.println("[서버 시작 시 실행] 완료. DB 저장됨.");
+        System.out.println("[서버 시작 시 실행] 비교과 프로그램 동기화 시작...");
+        programService.importProgramsFromJson();
         System.out.println("[서버 시작 시 실행] 완료. DB 저장됨.");
 //        System.out.println("[서버 시작 시 실행] 비교과 프로그램 동기화 시작...");
 //        programService.importProgramsFromJson();
