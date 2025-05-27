@@ -14,7 +14,7 @@ public class ContestDetailRes {
     private String startDate;
     private String endDate;
     private String thumbnail;
-    private String linkUrl;
+    private String detailUrl;
     private String Dday;
     private String status;
     private String category;
@@ -27,7 +27,7 @@ public class ContestDetailRes {
                 .id(c.getId())
                 .name(c.getName())
                 .thumbnail(c.getThumbnailUrl())
-                .linkUrl(c.getLinkUrl())
+                .detailUrl(c.getDetailUrl())
                 .startDate(String.valueOf(c.getStartDate()))
                 .endDate(String.valueOf(c.getEndDate()))
                 .Dday(c.getDday())

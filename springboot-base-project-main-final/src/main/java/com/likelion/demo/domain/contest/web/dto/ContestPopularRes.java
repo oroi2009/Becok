@@ -17,7 +17,7 @@ public class ContestPopularRes {
     private String category;
     private String Dday;
     private String imgUrl;
-    private String linkUrl;
+    private String detailUrl;
     private String hits;
     private String status;
     private boolean bookmarked; // 북마크 여부
@@ -44,7 +44,7 @@ public class ContestPopularRes {
                 .organizer(contest.getOrganizer())
                 .category(contest.getCategory())
                 .imgUrl(contest.getThumbnailUrl())
-                .linkUrl(contest.getLinkUrl())
+                .detailUrl(contest.getDetailUrl())
                 .hits(String.valueOf(contest.getHits()))
                 .Dday(contest.getDday())
                 .status(contest.getStatus())

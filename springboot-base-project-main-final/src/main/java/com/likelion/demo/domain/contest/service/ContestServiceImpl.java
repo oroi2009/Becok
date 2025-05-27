@@ -57,6 +57,14 @@ public class ContestServiceImpl implements ContestService {
     @Override
     public void syncContestsFromLinkareer() {
         List<Contest> crawledContests = linkareerCrawler.crawl();
-        contestRepository.saveAll(crawledContests);
+
+        for (Contest contest : crawledContests) {
+            //이름(name) 기준으로 중복저장 확인
+            if (!contestRepository.existsByName(contest.getName())) {
+                contestRepository.save(contest);
+            } else {
+                System.out.println("이미 저장된 공모전: " + contest.getName());
+            }
+        }
     }
 }

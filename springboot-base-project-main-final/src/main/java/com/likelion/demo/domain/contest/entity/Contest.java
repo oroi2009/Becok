@@ -22,7 +22,7 @@ public class Contest {
     private String category;
     private String status;
     private String thumbnailUrl;
-    private String linkUrl;
+    private String detailUrl;
     private int hits;
     private String Dday;
 }
