@@ -32,6 +32,12 @@ public class RecommendController {
         return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.ok(res));
     }
 
+    //추천 공모전 리스 조회
+    @GetMapping("/recommend/list/{memberId}")
+    public ResponseEntity<SuccessResponse<?>> getRecommendContestList(@PathVariable Long memberId) {
+
+    }
+
     //추천 비교과 상세 조회
     @GetMapping("/recommend/list/program/{programId}")
     public ResponseEntity<SuccessResponse<?>> RecommendProgramDetails( @PathVariable Long programId) {

@@ -6,7 +6,8 @@ import com.likelion.demo.domain.recommendation.web.dto.RecommendProgramRes;
 import java.util.List;
 
 public interface GptRecommendationService {
-    // gpt 추천 공모전
+    //
+    // gpt 추천 공모전 db에 삽입
     void RecommendContest(Long memberId);
     //gpt 추천
     GptRecommendationProgramRes RecommendProgram(Long memberId);
