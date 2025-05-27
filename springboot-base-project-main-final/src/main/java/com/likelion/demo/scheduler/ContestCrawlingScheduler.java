@@ -23,7 +23,7 @@ public class ContestCrawlingScheduler {
     public void syncContestsFromLinkareer() {
         // 기존 DemoApplication.run()안에 있던 로직 이동
         System.out.println("[크롤링 스케줄러] 링커리어 공모전 동기화 시작...");
-        contestService.syncContestsFromLinkareer();
+        //contestService.syncContestsFromLinkareer();
         System.out.println("[크롤링 스케줄러] 완료. DB 저장됨.");
     }
 }

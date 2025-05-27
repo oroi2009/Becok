@@ -17,7 +17,7 @@ public class ProgramDataCrawlingScheduler {
     // TODO: 현재는 앱 실행 시점에 1회만 크롤링이 수행됨
     //  → 이를 개선하여 매일 특정 시간에 자동으로 크롤링되도록 설정한 메서드
     // TODO: 추후 비교과 프로그램 크롤링 로직도 유사한 방식으로 스케줄링 적용할 수 있음
-    @PostConstruct
+   // @PostConstruct
     public void runAtStartup() {
         System.out.println("[서버 시작 시 실행] 비교과 프로그램 동기화 시작...");
         programService.importProgramsFromJson();
@@ -40,7 +40,7 @@ public class ProgramDataCrawlingScheduler {
     public void syncProgram() {
         // 기존 DemoApplication.run()안에 있던 로직 이동
         System.out.println("[크롤링 스케줄러] 비교과 프로그램 동기화 시작...");
-        programService.importProgramsFromJson(); //DB저장
+        //programService.importProgramsFromJson(); //DB저장
         System.out.println("[크롤링 스케줄러] 완료. DB 저장됨.");
     }
 }
