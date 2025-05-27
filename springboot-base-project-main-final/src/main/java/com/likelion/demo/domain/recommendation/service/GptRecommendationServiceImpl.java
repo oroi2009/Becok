@@ -11,6 +11,7 @@ import com.likelion.demo.domain.contest.repository.ContestRepository;
 import com.likelion.demo.domain.member.entity.Member;
 import com.likelion.demo.domain.member.exception.MemberNotFoundException;
 import com.likelion.demo.domain.member.repository.MemberRepository;
+import com.likelion.demo.domain.notification.repository.ContestNotificationRepository;
 import com.likelion.demo.domain.programData.entity.Program;
 import com.likelion.demo.domain.programData.repository.ProgramRepository;
 import com.likelion.demo.domain.programData.web.dto.RoadmapProgramRes;
@@ -43,6 +44,8 @@ public class GptRecommendationServiceImpl implements GptRecommendationService {
     private final GptPromptBuilder gptPromptBuilder;
     private final GptClient gptClient;
     private final ContestRepository contestRepository;
+    private final ContestBookmarkRepository bookmarkRepository;
+    private final ContestNotificationRepository notificationRepository;
 
     @Transactional
     @Override
@@ -252,17 +255,16 @@ public class GptRecommendationServiceImpl implements GptRecommendationService {
     }
 
     @Override
-    public ProgramDetailRes PopularProgramDetails(Long programId) {
+    public ProgramDetailRes PopularProgramDetails(Long memberId, Long programId) {
         //프로그램 존재 여부 확인
         Program program = programRepository.findById(programId)
                 .orElseThrow(ListProgramNotFoundException::new);
 
         // TODO: 북마크, 알림 관련 로직 구현 후 수정 필요
-//         boolean isBookmarked = bookmarkRepository.existsByMemberIdAndContestId(memberId, contest.getId());
-//         boolean hasNotification = notificationRepository.existsByMemberIdAndContestId(memberId, contest.getId());
+         boolean isBookmarked = bookmarkRepository.existsByMemberIdAndContestId(memberId, program.getId());
+         boolean hasNotification = notificationRepository.existsByMemberIdAndContestId(memberId, program.getId());
 
-        boolean bookmarked = true;
-        boolean notification = true;
+
 
         return new ProgramDetailRes(
                 program.getId(),
@@ -273,8 +275,8 @@ public class GptRecommendationServiceImpl implements GptRecommendationService {
                 program.getEnd_date(),
                 program.getPoint(),
                 program.getStatus(),
-                bookmarked,
-                notification,
+                isBookmarked,
+                hasNotification,
                 program.getTags()
         );
     }

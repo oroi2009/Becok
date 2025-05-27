@@ -5,15 +5,18 @@ import com.likelion.demo.domain.bookmark.service.ContestBookmarkService;
 import com.likelion.demo.domain.bookmark.service.ProgramBookmarkService;
 import com.likelion.demo.domain.bookmark.web.dto.BookmarkToggleReq;
 import com.likelion.demo.domain.bookmark.web.dto.BookmarkToggleRes;
+import com.likelion.demo.domain.remember.web.dto.RememberRes;
 import com.likelion.demo.global.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/bookmark")
 @RequiredArgsConstructor
 public class BookmarkController {
-
     private final ContestBookmarkService contestBookmarkService;
     private final ProgramBookmarkService programBookmarkService;
 

@@ -21,6 +21,6 @@ public interface GptRecommendationService {
     //추천 비교과 상세 정보 가져오기
     RecommendProgramRes RecommendProgramDetails(Long programId);
     //인기 비교과 상세 정보 가져오기
-    ProgramDetailRes PopularProgramDetails(Long programId);
+    ProgramDetailRes PopularProgramDetails(Long memberId, Long programId);
 
 }
