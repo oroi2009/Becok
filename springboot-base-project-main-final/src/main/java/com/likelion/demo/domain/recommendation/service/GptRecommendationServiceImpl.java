@@ -260,7 +260,7 @@ public class GptRecommendationServiceImpl implements GptRecommendationService {
         Program program = programRepository.findById(programId)
                 .orElseThrow(ListProgramNotFoundException::new);
 
-        // TODO: 북마크, 알림 관련 로직 구현 후 수정 필요
+
          boolean isBookmarked = bookmarkRepository.existsByMemberIdAndContestId(memberId, program.getId());
          boolean hasNotification = notificationRepository.existsByMemberIdAndContestId(memberId, program.getId());
 

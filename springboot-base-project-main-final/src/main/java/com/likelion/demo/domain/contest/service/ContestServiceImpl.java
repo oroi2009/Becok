@@ -39,7 +39,7 @@ public class ContestServiceImpl implements ContestService {
     @Override
     public ContestDetailRes getContestDetail(Long memberId, Long contestId) {
         Contest contest = contestRepository.findById(contestId).orElseThrow(ContestNotFoundException::new);
-        // TODO: 북마크/알림 여부를 반환 로직 필요
+
         boolean isBookmarked = bookmarkRepository.existsByMemberIdAndContestId(memberId, contest.getId());
         boolean hasNotification = notificationRepository.existsByMemberIdAndContestId(memberId, contest.getId());
 

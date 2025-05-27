@@ -30,9 +30,9 @@ public class DemoApplication implements CommandLineRunner{
 		// TODO: 현재는 크롤링 로직이 앱 실행 시 첫 1회만 동작하도록 구현되어 있음
 		//  → @Scheduled를 사용해 주기적 실행되도록 리팩터링 필요해보임
 
-		System.out.println("[크롤링 테스트] 링커리어 공모전 크롤링 시작...");
+		//System.out.println("[크롤링 테스트] 링커리어 공모전 크롤링 시작...");
 		//contestService.syncContestsFromLinkareer(); // TODO: 해당 부분을 scheduler 패키지로 이동
-		System.out.println("[크롤링 테스트] 완료. DB 저장됨.");
+		//System.out.println("[크롤링 테스트] 완료. DB 저장됨.");
 	}
 
 	@Bean
