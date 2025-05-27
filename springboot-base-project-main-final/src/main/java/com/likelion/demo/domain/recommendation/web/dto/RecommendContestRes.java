@@ -24,7 +24,7 @@ public record RecommendContestRes(
     public static RecommendContestRes of(Contest contest, ContestStatus status,
                                          List<String> category, Boolean bookmarked, Boolean notification) {
         return new RecommendContestRes(contest.getId(), contest.getName(),
-                contest.getOrganizer(), contest.getThumbnailUrl(), contest.getLinkUrl(),
+                contest.getOrganizer(), contest.getThumbnailUrl(), contest.getDetailUrl(),
                 contest.getStartDate(), contest.getEndDate(), status, category, bookmarked, notification);
     }
 }
