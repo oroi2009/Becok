@@ -25,17 +25,8 @@ public class ProgramPopularRes {
     private List<String> tags;
     private int hit;
 
-    public static ProgramPopularRes from(Program p, Long memberId, boolean bookmarked, boolean notification) {
-        // status 계산
-        LocalDate today = LocalDate.now();
-        String status;
-        if (today.isBefore(p.getStart_date())) {
-            status = "모집대기";
-        } else if (!today.isAfter(p.getEnd_date())) {
-            status = "모집중";
-        } else {
-            status = "모집마감";
-        }
+    public static ProgramPopularRes from(Program p, boolean bookmarked, boolean notification) {
+
 
         return ProgramPopularRes.builder()
                 .id(p.getId())
@@ -45,7 +36,7 @@ public class ProgramPopularRes {
                 .startDate(p.getStart_date())
                 .endDate(p.getEnd_date())
                 .point(p.getPoint())
-                .status(status)
+                .status(String.valueOf(p.getStatus()))
                 .bookmarked(bookmarked)
                 .notification(notification)
                 .tags(p.getTags())

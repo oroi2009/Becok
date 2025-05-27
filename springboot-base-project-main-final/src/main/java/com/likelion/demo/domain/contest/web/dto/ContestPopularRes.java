@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Getter
 @Builder
-public class ContestRes {
+public class ContestPopularRes {
     private Long id;
     private String name;
     private String startDate;
@@ -23,20 +23,20 @@ public class ContestRes {
     private boolean bookmarked; // 북마크 여부
     private boolean notification;    // 알림 여부
 
-    public static ContestRes from(Contest contest, boolean bookmarked, boolean notification) {
+    public static ContestPopularRes from(Contest contest, boolean bookmarked, boolean notification) {
         // status 계산
         LocalDate today = LocalDate.now();
         String status;
-        int dday;
+
         if (today.isBefore(contest.getStartDate())) {
-            status = "모집예정";
+            status = "모집 중";
         } else if (!today.isAfter(contest.getEndDate())) {
-            status = "모집중";
+            status = "모집 대기";
         } else {
-            status = "모집마감";
+            status = "모집 완료";
         }
 
-        return ContestRes.builder()
+        return ContestPopularRes.builder()
                 .id(contest.getId())
                 .name(contest.getName())
                 .startDate(contest.getStartDate().toString())

@@ -3,8 +3,12 @@ package com.likelion.demo.domain.programData.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.likelion.demo.domain.bookmark.repository.ProgramBookmarkRepository;
+import com.likelion.demo.domain.contest.entity.Contest;
+import com.likelion.demo.domain.contest.exception.ContestNotFoundException;
+import com.likelion.demo.domain.contest.web.dto.ContestPopularRes;
 import com.likelion.demo.domain.programData.entity.Program;
 import com.likelion.demo.domain.programData.entity.ProgramStatus;
+import com.likelion.demo.domain.programData.exception.NoPopularContentException;
 import com.likelion.demo.domain.programData.repository.ProgramRepository;
 import com.likelion.demo.domain.programData.web.dto.ProgramDto;
 import com.likelion.demo.domain.programData.web.dto.ProgramPopularRes;
@@ -133,20 +137,23 @@ public class ProgramServiceImple implements ProgramService {
     }
 
     @Override
-    public List<ProgramPopularRes> getPopularPrograms(Long memberId) {
+    public List<ProgramPopularRes> getPopularPrograms() {
         var programs = programRepository.findTop5ByOrderByHitDesc();
-        if (programs.isEmpty()) {
-            throw new NoPopularContentException("program");
-        }
-        return programs.stream()
-                .map(p -> ProgramPopularRes.from(
-                        p,
-                        memberId,
-                        bookmarkRepository
 
-                ))
+        if (programs.isEmpty()) {
+            throw new NoPopularContentException();
+        }
+
+        return programs.stream()
+                .map(p -> {
+                    // TODO: 북마크/알림 여부를 반환 로직 필요
+//                    boolean isBookmarked = bookmarkRepository.existsByMemberIdAndContestId(memberId, contest.getId());
+//                    boolean hasNotification = notificationRepository.existsByMemberIdAndContestId(memberId, contest.getId());
+                    boolean isBookmarked = true;
+                    boolean hasNotification = true;
+
+                    return ProgramPopularRes.from(p, isBookmarked, hasNotification);
+                })
                 .collect(Collectors.toList());
     }
 }
-
-

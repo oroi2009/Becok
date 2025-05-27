@@ -2,7 +2,7 @@ package com.likelion.demo.domain.contest.web.controller;
 
 import com.likelion.demo.domain.contest.service.ContestService;
 import com.likelion.demo.domain.contest.web.dto.ContestDetailRes;
-import com.likelion.demo.domain.contest.web.dto.ContestRes;
+import com.likelion.demo.domain.contest.web.dto.ContestPopularRes;
 import com.likelion.demo.global.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,9 +22,8 @@ public class ContestController {
     private final ContestService contestService;
 
     @GetMapping("/popular")
-    public ResponseEntity<SuccessResponse<List<ContestRes>>> getPopularContests() {
-        List<ContestRes> contests = contestService.getPopularContests();
-
+    public ResponseEntity<SuccessResponse<List<ContestPopularRes>>> getPopularContests() {
+        List<ContestPopularRes> contests = contestService.getPopularContests();
         return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.ok(contests));
     }
 

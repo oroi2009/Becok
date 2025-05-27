@@ -12,5 +12,5 @@ public interface ProgramService {
     void importProgramsFromJson();
 
     //인기 비교과 프로그램 상위 5개 조회
-    List<ProgramPopularRes> getPopularPrograms(Long memberId);
+    List<ProgramPopularRes> getPopularPrograms();
 }
