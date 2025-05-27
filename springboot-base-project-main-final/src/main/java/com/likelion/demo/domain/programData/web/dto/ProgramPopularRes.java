@@ -19,13 +19,11 @@ public class ProgramPopularRes {
     private LocalDate endDate;
     private Integer point;
     private String status;        // UPCOMING, ONGOING, CLOSED
-    private Boolean bookmarked;
-    private Boolean notification;
     private List<String> category;
     private List<String> tags;
     private int hit;
 
-    public static ProgramPopularRes from(Program p, boolean bookmarked, boolean notification) {
+    public static ProgramPopularRes from(Program p) {
 
 
         return ProgramPopularRes.builder()
@@ -37,8 +35,6 @@ public class ProgramPopularRes {
                 .endDate(p.getEnd_date())
                 .point(p.getPoint())
                 .status(String.valueOf(p.getStatus()))
-                .bookmarked(bookmarked)
-                .notification(notification)
                 .tags(p.getTags())
                 .hit(p.getHit())
                 .build();

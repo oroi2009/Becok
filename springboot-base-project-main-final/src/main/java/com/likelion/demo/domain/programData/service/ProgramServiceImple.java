@@ -145,15 +145,7 @@ public class ProgramServiceImple implements ProgramService {
         }
 
         return programs.stream()
-                .map(p -> {
-                    // TODO: 북마크/알림 여부를 반환 로직 필요
-//                    boolean isBookmarked = bookmarkRepository.existsByMemberIdAndContestId(memberId, contest.getId());
-//                    boolean hasNotification = notificationRepository.existsByMemberIdAndContestId(memberId, contest.getId());
-                    boolean isBookmarked = true;
-                    boolean hasNotification = true;
-
-                    return ProgramPopularRes.from(p, isBookmarked, hasNotification);
-                })
+                .map(program -> ProgramPopularRes.from(program))
                 .collect(Collectors.toList());
     }
 }
