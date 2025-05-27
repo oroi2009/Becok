@@ -20,11 +20,11 @@ public class ProgramDataCrawlingScheduler {
     @PostConstruct
     public void runAtStartup() {
         System.out.println("[서버 시작 시 실행] 비교과 프로그램 동기화 시작...");
-//        programService.importProgramsFromJson();
+        programService.importProgramsFromJson();
         System.out.println("[서버 시작 시 실행] 완료. DB 저장됨.");
-//        System.out.println("[서버 시작 시 실행] 비교과 프로그램 동기화 시작...");
-//        programService.importProgramsFromJson();
-//        System.out.println("[서버 시작 시 실행] 완료. DB 저장됨.");
+        System.out.println("[서버 시작 시 실행] 비교과 프로그램 동기화 시작...");
+        programService.importProgramsFromJson();
+        System.out.println("[서버 시작 시 실행] 완료. DB 저장됨.");
     }
     // TODO: 일정 주기로 크롤링 되도록 설정 필요
     // 예시) 매일 오전 3시에 실행되도록 cron 설정
