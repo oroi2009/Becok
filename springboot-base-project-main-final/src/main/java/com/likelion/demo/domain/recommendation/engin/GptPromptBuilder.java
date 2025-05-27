@@ -4,8 +4,10 @@ import com.likelion.demo.domain.member.entity.Member;
 import com.likelion.demo.domain.member.entity.RecommendType;
 import com.likelion.demo.domain.participation.entity.ProgramRecord;
 import com.likelion.demo.domain.programData.entity.Program;
+import com.likelion.demo.domain.recommendation.web.dto.GetRecommendationContestReq;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
+import org.hibernate.query.criteria.JpaRoot;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.Files;
@@ -16,6 +18,49 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Component
 public class GptPromptBuilder {
+    public String createPromptForContest(Member member, List<GetRecommendationContestReq> reqList){
+        StringBuilder prompt = new StringBuilder();
+
+        prompt.append("당신은 공모전 추천 전문가입니다. 다음 학생의 정보를 기반으로 아래 제공된 공모전 중에서 가능한 많이 추천해주세요." +
+                "추천 기준은 학생의 목표, 학년/학기, 관심 분야입니다.");
+
+        prompt.append("### 학생 정보\n");
+        prompt.append("- 목표: ").append(member.getGoal()).append("\n");
+        prompt.append("- 학년/학기: ").append(member.getGrade()).append("학년 ").append(member.getSemester()).append("학기\n");
+
+        List<String> interests = member.getMemberInterestList().stream()
+                .map(mi -> mi.getInterest().getInterestType().name())
+                .collect(Collectors.toList());
+        prompt.append("- 관심 분야: ").append(interests.isEmpty() ? "없음" : interests).append("\n");
+
+        prompt.append("- 추천 타입: ").append(member.getRecommendType()).append(" (")
+                .append(getRecTypeExplanation(member.getRecommendType())).append(")\n\n");
+
+        prompt.append("\n### 현재 진행 중인 공모전 목록\n");
+        for (int i = 0; i < reqList.size(); i++) {
+            GetRecommendationContestReq contest = reqList.get(i);
+            prompt.append("  {\n");
+            prompt.append("    \"id\": " + contest.id() + ",\n");
+            prompt.append("    \"category\": \"" + contest.category() + "\",\n");
+            prompt.append("    \"name\": \"" + contest.name() + "\"\n");
+            prompt.append("  }");
+            if (i < reqList.size() - 1) {
+                prompt.append(",\n");
+            }
+        }
+
+
+        prompt.append("\n### 요청\n");
+        prompt.append("학생에게 적합한 공모전을 최대한 많이 추천해 주세요.\n");
+        prompt.append("각 공모전의 제목이 아닌 고유 ID만 나열해주세요.\n");
+        prompt.append("형식은 아래와 같이 숫자만 공백 기준으로 나열해주세요.\n");
+        prompt.append("예시:\n");
+        prompt.append("12 105 27 ...");
+
+
+        return prompt.toString();
+    }
+
     @SneakyThrows
     public String createGptPrompt(Member member, List<Program> currentPrograms) {
         StringBuilder prompt = new StringBuilder();
@@ -40,6 +85,8 @@ public class GptPromptBuilder {
         // 추천 타입 설명
         prompt.append("- 추천 타입: ").append(member.getRecommendType()).append(" (")
                 .append(getRecTypeExplanation(member.getRecommendType())).append(")\n\n");
+
+        prompt.append("\n### 현재 진행 중인 비교과 프로그램 목록\n");
 
         //참여 프로그램 리스트 추출
         List<String> participatedProgramTitles = member.getPrograms().stream()

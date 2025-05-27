@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface ContestBookmarkRepository extends JpaRepository<ContestBookmark, Long> {
     Optional<ContestBookmark> findByMember_IdAndContest_Id(Long memberId, Long contestId);
+    boolean existsByMemberIdAndContestId(Long memberId, Long contestId);
 }
