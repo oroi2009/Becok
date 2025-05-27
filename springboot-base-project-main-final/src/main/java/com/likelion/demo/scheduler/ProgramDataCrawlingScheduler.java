@@ -19,6 +19,9 @@ public class ProgramDataCrawlingScheduler {
     // TODO: 추후 비교과 프로그램 크롤링 로직도 유사한 방식으로 스케줄링 적용할 수 있음
     @PostConstruct
     public void runAtStartup() {
+        System.out.println("[서버 시작 시 실행] 비교과 프로그램 동기화 시작...");
+//        programService.importProgramsFromJson();
+        System.out.println("[서버 시작 시 실행] 완료. DB 저장됨.");
 //        System.out.println("[서버 시작 시 실행] 비교과 프로그램 동기화 시작...");
 //        programService.importProgramsFromJson();
 //        System.out.println("[서버 시작 시 실행] 완료. DB 저장됨.");

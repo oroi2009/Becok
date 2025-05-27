@@ -33,7 +33,7 @@ public class RecommendController {
         return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.ok(res));
     }
 
-    //추천 공모전 리스 조회
+    //추천 공모전 리스트 조회
     @GetMapping("/recommend/list/{memberId}")
     public ResponseEntity<SuccessResponse<?>> getRecommendContestList(@PathVariable Long memberId) {
         return null;
