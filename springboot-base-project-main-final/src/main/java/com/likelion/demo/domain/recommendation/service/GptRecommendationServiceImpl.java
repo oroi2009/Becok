@@ -3,6 +3,9 @@ package com.likelion.demo.domain.recommendation.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.likelion.demo.domain.contest.entity.Contest;
+import com.likelion.demo.domain.contest.exception.ContestNotFoundException;
+import com.likelion.demo.domain.contest.repository.ContestRepository;
 import com.likelion.demo.domain.member.entity.Member;
 import com.likelion.demo.domain.member.exception.MemberNotFoundException;
 import com.likelion.demo.domain.member.repository.MemberRepository;
@@ -11,18 +14,23 @@ import com.likelion.demo.domain.programData.repository.ProgramRepository;
 import com.likelion.demo.domain.programData.web.dto.RoadmapProgramRes;
 import com.likelion.demo.domain.recommendation.engin.GptClient;
 import com.likelion.demo.domain.recommendation.engin.GptPromptBuilder;
+import com.likelion.demo.domain.recommendation.entity.RecommendContest;
 import com.likelion.demo.domain.recommendation.entity.RecommendProgram;
 import com.likelion.demo.domain.recommendation.exception.RecommendNotFoundException;
 import com.likelion.demo.domain.recommendation.exception.ListProgramNotFoundException;
+import com.likelion.demo.domain.recommendation.repository.RecommendContestRepository;
 import com.likelion.demo.domain.recommendation.repository.RecommendProgramRepository;
+import com.likelion.demo.domain.recommendation.web.dto.GetRecommendationContestReq;
 import com.likelion.demo.domain.recommendation.web.dto.GptRecommendationProgramRes;
 import com.likelion.demo.domain.recommendation.web.dto.ProgramDetailRes;
 import com.likelion.demo.domain.recommendation.web.dto.RecommendProgramDto;
 import com.likelion.demo.domain.recommendation.web.dto.RecommendProgramRes;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,10 +39,62 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class GptRecommendationServiceImpl implements GptRecommendationService {
     private final RecommendProgramRepository recommendProgramRepository;
+    private final RecommendContestRepository recommendContestRepository;
     private final MemberRepository memberRepository;
     private final ProgramRepository programRepository;
     private final GptPromptBuilder gptPromptBuilder;
     private final GptClient gptClient;
+    private final ContestRepository contestRepository;
+
+    @Transactional
+    @Override
+    public void RecommendContest(Long memberId){
+        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+
+        List<Contest> contestList = contestRepository.findAll();
+        List<GetRecommendationContestReq> reqList = new ArrayList<>();
+
+        for (Contest contest : contestList) {
+            GetRecommendationContestReq req = GetRecommendationContestReq.from(contest);
+            reqList.add(req);
+        }
+
+        String prompt = gptPromptBuilder.createPromptForContest(member, reqList);
+
+        String response = gptClient.requestRecommendation(prompt);
+        System.out.println(response);
+
+        ObjectMapper mapper = new ObjectMapper();
+        String content = "";
+
+        try {
+            JsonNode rootNode = mapper.readTree(response);
+            content = rootNode.path("choices").get(0).path("message").path("content").asText();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            content = "";
+        }
+
+        List<Long> recommendedIds = Arrays.stream(content.split(" "))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .filter(s -> s.matches("\\d+"))
+                .map(Long::parseLong)  // 문자열 → Long
+                .collect(Collectors.toList());
+
+
+        for (Long contestId : recommendedIds) {
+            Contest contest = contestRepository.findById(contestId)
+                    .orElseThrow(ContestNotFoundException::new);
+
+            RecommendContest recommendContest = RecommendContest.builder()
+                    .member(member)
+                    .contest(contest)
+                    .title(contest.getName())
+                    .build();
+            recommendContestRepository.save(recommendContest);
+        }
+    }
 
     @Transactional
     @Override
