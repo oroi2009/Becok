@@ -3,7 +3,9 @@ package com.likelion.demo.domain.recommendation.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.likelion.demo.domain.bookmark.repository.ContestBookmarkRepository;
 import com.likelion.demo.domain.contest.entity.Contest;
+import com.likelion.demo.domain.contest.entity.enums.ContestStatus;
 import com.likelion.demo.domain.contest.exception.ContestNotFoundException;
 import com.likelion.demo.domain.contest.repository.ContestRepository;
 import com.likelion.demo.domain.member.entity.Member;
@@ -20,14 +22,9 @@ import com.likelion.demo.domain.recommendation.exception.RecommendNotFoundExcept
 import com.likelion.demo.domain.recommendation.exception.ListProgramNotFoundException;
 import com.likelion.demo.domain.recommendation.repository.RecommendContestRepository;
 import com.likelion.demo.domain.recommendation.repository.RecommendProgramRepository;
-import com.likelion.demo.domain.recommendation.web.dto.GetRecommendationContestReq;
-import com.likelion.demo.domain.recommendation.web.dto.GptRecommendationProgramRes;
-import com.likelion.demo.domain.recommendation.web.dto.ProgramDetailRes;
-import com.likelion.demo.domain.recommendation.web.dto.RecommendProgramDto;
-import com.likelion.demo.domain.recommendation.web.dto.RecommendProgramRes;
+import com.likelion.demo.domain.recommendation.web.dto.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -41,6 +38,7 @@ public class GptRecommendationServiceImpl implements GptRecommendationService {
     private final RecommendProgramRepository recommendProgramRepository;
     private final RecommendContestRepository recommendContestRepository;
     private final MemberRepository memberRepository;
+    private final ContestBookmarkRepository contestBookmarkRepository;
     private final ProgramRepository programRepository;
     private final GptPromptBuilder gptPromptBuilder;
     private final GptClient gptClient;
@@ -94,6 +92,39 @@ public class GptRecommendationServiceImpl implements GptRecommendationService {
                     .build();
             recommendContestRepository.save(recommendContest);
         }
+    }
+
+    @Override
+    public List<RecommendContestRes> getRecommendContest(Long memberId){
+        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+
+        List<RecommendContest> recommendContestList = recommendContestRepository.findAllByMemberId(memberId);
+
+        List<RecommendContestRes> resList = new ArrayList<>();
+        for (RecommendContest rc : recommendContestList) {
+            Contest contest = rc.getContest();
+
+            boolean bookmarked = contestBookmarkRepository.existsByMemberIdAndContestId(memberId, contest.getId());
+            // 알림 설정 여부도 체크하는 로직 필요
+            boolean notification = false;
+
+            ContestStatus status;
+            if(contest.getStatus().equals("모집 중")){
+                status = ContestStatus.ONGOING;
+            }else if (contest.getStatus().equals("모집 종료")){
+                status = ContestStatus.CLOSED;
+            }else{ status = ContestStatus.UPCOMING; }
+
+            String categoryStr = contest.getCategory();
+            List<String> categories = Arrays.stream(categoryStr.split("/"))
+                    .map(String::trim)
+                    .filter(s -> !s.isEmpty())
+                    .collect(Collectors.toList());
+
+            RecommendContestRes res = RecommendContestRes.of(contest, status, categories, bookmarked, notification);
+            resList.add(res);
+        }
+        return resList;
     }
 
     @Transactional
