@@ -17,8 +17,8 @@ import java.util.Set;
 @Component
 public class LinkareerCrawler {
 
-    private static final int MAX_PAGES = 3;    // 최대 페이지 수
-    private static final int MAX_CONTESTS = 30; // 최대 크롤링 개수
+    private static final int MAX_PAGES = 3; // 최대 3페이지
+    private static final int MAX_CONTESTS = 30; // 최대 50개까지
 
     public List<Contest> crawl() {
         WebDriverManager.chromedriver().setup();
@@ -99,6 +99,7 @@ public class LinkareerCrawler {
                         LocalDate startDate = startDateStr.isEmpty()
                                 ? LocalDate.now()
                                 : LocalDate.parse(startDateStr.replace(".", "-"));
+
                         LocalDate endDate = endDateStr.isEmpty()
                                 ? LocalDate.now().plusDays(30)
                                 : LocalDate.parse(endDateStr.replace(".", "-"));
@@ -160,6 +161,7 @@ public class LinkareerCrawler {
                     }
                 }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -168,9 +170,7 @@ public class LinkareerCrawler {
 
         return contests;
     }
-    /**
-     * '홈페이지 지원' 버튼 클릭으로 열린 새 탭/창 혹은 같은 탭의 URL을 가져오는 유틸.
-     */
+
     private String fetchViaApplyButton(WebDriver driver, String linkUrl) {
         try {
             String original = driver.getWindowHandle();

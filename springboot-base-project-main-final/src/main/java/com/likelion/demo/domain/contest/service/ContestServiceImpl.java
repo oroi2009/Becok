@@ -4,7 +4,7 @@ import com.likelion.demo.domain.contest.entity.Contest;
 import com.likelion.demo.domain.contest.exception.ContestNotFoundException;
 import com.likelion.demo.domain.contest.repository.ContestRepository;
 import com.likelion.demo.domain.contest.web.dto.ContestDetailRes;
-import com.likelion.demo.domain.contest.web.dto.ContestRes;
+import com.likelion.demo.domain.contest.web.dto.ContestPopularRes;
 import com.likelion.demo.global.crawler.LinkareerCrawler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class ContestServiceImpl implements ContestService {
 
     // 공모전 인기 상위 5개 카드 반환
     @Override
-    public List<ContestRes> getPopularContests() {
+    public List<ContestPopularRes> getPopularContests() {
         List<Contest> contests = contestRepository.findTop5ByOrderByHitsDesc();
 
         if (contests.isEmpty()) {
@@ -36,7 +36,7 @@ public class ContestServiceImpl implements ContestService {
                     boolean isBookmarked = true;
                     boolean hasNotification = true;
 
-                    return ContestRes.from(contest, isBookmarked, hasNotification);
+                    return ContestPopularRes.from(contest, isBookmarked, hasNotification);
                 })
                 .collect(Collectors.toList());
     }
