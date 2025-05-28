@@ -1,6 +1,7 @@
 package com.likelion.demo.domain.recommendation.engin;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -18,13 +19,16 @@ public class GptClient {
     //외부 api요청에 사용하는 HTTP 클라이언트
     private final RestTemplate restTemplate;
 
+    @Value("${openai.api.key}")
+    private String apiKey;
+
     private static final String API_URL = "https://api.openai.com/v1/chat/completions";
-    private static final String API_KEY = System.getenv("OPENAI_API_KEY");;
+//    private static final String API_KEY = System.getenv("OPENAI_API_KEY");
     public String requestRecommendation(String prompt) {
         //HTTP 요청 헤더 설정
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization", "Bearer " + API_KEY);
+        headers.set("Authorization", "Bearer " + apiKey);
 
         Map<String, Object> body = Map.of(
                 "model", "gpt-3.5-turbo",

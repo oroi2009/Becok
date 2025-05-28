@@ -28,6 +28,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -46,6 +47,7 @@ public class GptRecommendationServiceImpl implements GptRecommendationService {
     private final ContestRepository contestRepository;
     private final ContestBookmarkRepository bookmarkRepository;
     private final ContestNotificationRepository notificationRepository;
+    private final ContestNotificationRepository contestNotificationRepository;
 
     @Transactional
     @Override
@@ -104,27 +106,40 @@ public class GptRecommendationServiceImpl implements GptRecommendationService {
         List<RecommendContest> recommendContestList = recommendContestRepository.findAllByMemberId(memberId);
 
         List<RecommendContestRes> resList = new ArrayList<>();
+
         for (RecommendContest rc : recommendContestList) {
             Contest contest = rc.getContest();
 
             boolean bookmarked = contestBookmarkRepository.existsByMemberIdAndContestId(memberId, contest.getId());
-            // 알림 설정 여부도 체크하는 로직 필요
-            boolean notification = false;
+            boolean notification = contestNotificationRepository.existsByMemberIdAndContestId(memberId, contest.getId());
 
-            ContestStatus status;
-            if(contest.getStatus().equals("모집 중")){
-                status = ContestStatus.ONGOING;
-            }else if (contest.getStatus().equals("모집 종료")){
-                status = ContestStatus.CLOSED;
-            }else{ status = ContestStatus.UPCOMING; }
+            // status 계산
+            LocalDate today = LocalDate.now();
+            if (today.isBefore(contest.getStartDate())) {
+                contest.setStatus(ContestStatus.UPCOMING);
+            } else if (!today.isAfter(contest.getEndDate())) {
+                contest.setStatus(ContestStatus.ONGOING);
+            } else {
+                contest.setStatus(ContestStatus.CLOSED);
+            }
 
+            // 카테고리 파싱
             String categoryStr = contest.getCategory();
-            List<String> categories = Arrays.stream(categoryStr.split("/"))
-                    .map(String::trim)
-                    .filter(s -> !s.isEmpty())
-                    .collect(Collectors.toList());
+            List<String> categories = (categoryStr != null) ?
+                    Arrays.stream(categoryStr.split("/"))
+                            .map(String::trim)
+                            .filter(s -> !s.isEmpty())
+                            .collect(Collectors.toList()) :
+                    new ArrayList<>();
 
-            RecommendContestRes res = RecommendContestRes.of(contest, status, categories, bookmarked, notification);
+            // 응답 객체 생성
+            RecommendContestRes res = RecommendContestRes.of(
+                    contest,
+                    contest.getStatus(), // status 변수 대신 바로 가져오기
+                    categories,
+                    bookmarked,
+                    notification
+            );
             resList.add(res);
         }
         return resList;
