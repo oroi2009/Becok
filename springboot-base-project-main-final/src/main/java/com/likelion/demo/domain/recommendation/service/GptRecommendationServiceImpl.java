@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.likelion.demo.domain.bookmark.repository.ContestBookmarkRepository;
+import com.likelion.demo.domain.bookmark.repository.ProgramBookmarkRepository;
 import com.likelion.demo.domain.contest.entity.Contest;
 import com.likelion.demo.domain.contest.entity.enums.ContestStatus;
 import com.likelion.demo.domain.contest.exception.ContestNotFoundException;
@@ -12,6 +13,7 @@ import com.likelion.demo.domain.member.entity.Member;
 import com.likelion.demo.domain.member.exception.MemberNotFoundException;
 import com.likelion.demo.domain.member.repository.MemberRepository;
 import com.likelion.demo.domain.notification.repository.ContestNotificationRepository;
+import com.likelion.demo.domain.notification.repository.ProgramNotificationRepository;
 import com.likelion.demo.domain.programData.entity.Program;
 import com.likelion.demo.domain.programData.repository.ProgramRepository;
 import com.likelion.demo.domain.programData.web.dto.RoadmapProgramRes;
@@ -45,8 +47,8 @@ public class GptRecommendationServiceImpl implements GptRecommendationService {
     private final GptPromptBuilder gptPromptBuilder;
     private final GptClient gptClient;
     private final ContestRepository contestRepository;
-    private final ContestBookmarkRepository bookmarkRepository;
-    private final ContestNotificationRepository notificationRepository;
+    private final ProgramBookmarkRepository bookmarkRepository;
+    private final ProgramNotificationRepository notificationRepository;
     private final ContestNotificationRepository contestNotificationRepository;
 
     @Transactional
@@ -275,10 +277,8 @@ public class GptRecommendationServiceImpl implements GptRecommendationService {
         Program program = programRepository.findById(programId)
                 .orElseThrow(ListProgramNotFoundException::new);
 
-
-         boolean isBookmarked = bookmarkRepository.existsByMemberIdAndContestId(memberId, program.getId());
-         boolean hasNotification = notificationRepository.existsByMemberIdAndContestId(memberId, program.getId());
-
+         boolean isBookmarked = bookmarkRepository.existsByMemberIdAndProgramId(memberId, program.getId());
+         boolean hasNotification = notificationRepository.existsByMemberIdAndProgramId(memberId, program.getId());
 
 
         return new ProgramDetailRes(

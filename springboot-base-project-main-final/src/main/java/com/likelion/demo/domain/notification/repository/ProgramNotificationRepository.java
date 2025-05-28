@@ -16,6 +16,8 @@ public interface ProgramNotificationRepository extends JpaRepository<ProgramNoti
     Optional<ProgramNotification> findByMember_IdAndProgram_Id(Long memberId, Long programId);
     List<ProgramNotification> findByMember_Id(Long memberId);
 
+    boolean existsByMemberIdAndProgramId(Long memberId, Long programId);
+
     @Query("SELECT pn FROM ProgramNotification pn JOIN FETCH pn.program p WHERE p.end_date = :targetDate")
     List<ProgramNotification> findAllWithProgramByEndDate(@Param("targetDate") LocalDate targetDate);
 }
