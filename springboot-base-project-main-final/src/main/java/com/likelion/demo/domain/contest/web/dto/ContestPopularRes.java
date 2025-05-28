@@ -1,6 +1,7 @@
 package com.likelion.demo.domain.contest.web.dto;
 
 import com.likelion.demo.domain.contest.entity.Contest;
+import com.likelion.demo.domain.contest.entity.enums.ContestStatus;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -19,21 +20,20 @@ public class ContestPopularRes {
     private String imgUrl;
     private String detailUrl;
     private String hits;
-    private String status;
+    private ContestStatus status;
     private boolean bookmarked; // 북마크 여부
     private boolean notification;    // 알림 여부
 
     public static ContestPopularRes from(Contest contest) {
         // status 계산
         LocalDate today = LocalDate.now();
-        String status;
 
         if (today.isBefore(contest.getStartDate())) {
-            status = "모집 중";
+            contest.setStatus(ContestStatus.UPCOMING); //시작 전
         } else if (!today.isAfter(contest.getEndDate())) {
-            status = "모집 대기";
+            contest.setStatus(ContestStatus.ONGOING); //
         } else {
-            status = "모집 완료";
+            contest.setStatus(ContestStatus.CLOSED); //
         }
 
         return ContestPopularRes.builder()

@@ -21,12 +21,11 @@ public class GptPromptBuilder {
     public String createPromptForContest(Member member, List<GetRecommendationContestReq> reqList){
         StringBuilder prompt = new StringBuilder();
 
-        prompt.append("당신은 공모전 추천 전문가입니다. 다음 학생의 정보를 기반으로 아래 제공된 공모전 중에서 가능한 많이 추천해주세요." +
-                "추천 기준은 학생의 목표, 학년/학기, 관심 분야입니다.");
+        prompt.append("당신은 공모전 추천 전문가입니다. 다음 학생의 정보를 기반으로 아래 제공된 공모전 최소 9개 이상 추천해주세요." +
+                "추천 기준은 학생의 목표, 관심 분야입니다.");
 
         prompt.append("### 학생 정보\n");
         prompt.append("- 목표: ").append(member.getGoal()).append("\n");
-        prompt.append("- 학년/학기: ").append(member.getGrade()).append("학년 ").append(member.getSemester()).append("학기\n");
 
         List<String> interests = member.getMemberInterestList().stream()
                 .map(mi -> mi.getInterest().getInterestType().name())
