@@ -10,6 +10,7 @@ import lombok.SneakyThrows;
 import org.hibernate.query.criteria.JpaRoot;
 import org.springframework.stereotype.Component;
 
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -98,7 +99,7 @@ public class GptPromptBuilder {
         }
 
         // [2] 우수 프로그램 list string 형태임 주의
-        String bestProgramJson = Files.readString(Paths.get("src/main/resources/best_program.json"));
+        InputStream bestProgramJson = getClass().getClassLoader().getResourceAsStream("best_program.json");
 
         prompt.append("### 비교과 로드맵 우수 사례 목록\n");
         prompt.append(bestProgramJson).append("\n");
