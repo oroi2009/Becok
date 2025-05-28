@@ -20,9 +20,9 @@ public class MailService {
         message.setSubject("\uD83D\uDCE2 [비콕 알림] 신청 마감 D-3! 지금 확인해보세요!"); // 제목
         message.setText("회원님이 알림 신청하신 프로그램의 마감이 얼마 남지 않았어요!\n\n" +
                 "\uD83D\uDCD8 프로그램명:" + title +
-                "\n\uD83D\uDDD3\uFE0F 접수 마감:" +enddate+
-                "\n\uD83D\uDC49 [신청하러 가기]:"+linkurl+
-                "\n놓치지 않도록 지금 확인해보세요!\n" +
+                "\n\n\uD83D\uDDD3\uFE0F 접수 마감:" +enddate+
+                "\n\n\uD83D\uDC49 [신청하러 가기]:"+linkurl+
+                "\n\n놓치지 않도록 지금 확인해보세요!\n\n" +
                 "- 비콕 드림 \uD83D\uDC8C"); // 내용
 
         // 메일 전송
@@ -38,11 +38,11 @@ public class MailService {
         message.setSubject("\uD83D\uDCE2 [비콕 알림] 신청 마감 D-1! 지금 바로 신청하세요!"); // 제목
         message.setText("회원님이 알림 신청하신 프로그램의 마감이 하루 남았어요!\n\n" +
                 "\uD83D\uDCD8 프로그램명:" + title +
-                "\uD83D\uDDD3\uFE0F 접수 마감:" +enddate+
-                "\n아직 신청하지 않으셨다면, 지금 바로 참여해보세요.  \n" +
-                "마감 전까지 얼마 남지 않았습니다! ⏳\n" +
+                "\n\n\uD83D\uDDD3\uFE0F 접수 마감:" +enddate+
+                "\n\n아직 신청하지 않으셨다면, 지금 바로 참여해보세요.  \n\n" +
+                "마감 전까지 얼마 남지 않았습니다! ⏳\n\n" +
                 "\uD83D\uDC49 [신청하러 가기]:"+linkurl+
-                "- 비콕 드림 \uD83D\uDC8C"); // 내용
+                "\n\n- 비콕 드림 \uD83D\uDC8C"); // 내용
 
         // 메일 전송
         mailSender.send(message);
