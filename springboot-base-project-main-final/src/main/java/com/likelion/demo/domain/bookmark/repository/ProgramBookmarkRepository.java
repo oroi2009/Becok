@@ -9,5 +9,8 @@ import java.util.Optional;
 public interface ProgramBookmarkRepository extends JpaRepository<ProgramBookmark, Long> {
     List<ProgramBookmark> findByMember_Id(Long memberId);
     Optional<ProgramBookmark> findByMember_IdAndProgram_Id(Long memberId, Long programId);
+
+    boolean existsByMemberIdAndProgramId(Long memberId, Long programId);
+
     void deleteByMember_IdAndProgram_Id(Long memberId, Long programId);
 }
